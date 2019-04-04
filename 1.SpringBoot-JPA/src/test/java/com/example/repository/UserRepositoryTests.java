@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.example.repository;
 
 import java.util.Date;
 
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.dao.IUserRepository;
 import com.example.model.User;
+import com.example.repository.IUserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

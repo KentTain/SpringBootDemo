@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dao.IUserRepository;
 import com.example.model.User;
+import com.example.repository.IUserRepository;
 
 @Service("userService")
 public class UserService implements IUserService {
