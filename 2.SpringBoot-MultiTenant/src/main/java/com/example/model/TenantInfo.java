@@ -27,6 +27,9 @@ public class TenantInfo {
 
     //@Column(name = "password")
     private String password;
+    
+    //@Column(name = "domain")
+    private String domain;
 
     public Integer getId() {
         return id;
@@ -74,5 +77,13 @@ public class TenantInfo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

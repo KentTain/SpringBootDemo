@@ -23,24 +23,15 @@ import com.example.repository.UserRepositoryTests;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTest {
-	private TenantInfo testTenant = new TenantInfo();
-	private TenantInfo devdbTenant = new TenantInfo();
+	private TenantInfo testTenant;
+	private TenantInfo devdbTenant;
 	private Logger logger = LoggerFactory.getLogger(UserRepositoryTests.class.getName());
 	
 	@Before 
 	public void setUp() throws Exception {
-		devdbTenant.setId(1);
-		devdbTenant.setTenantId("devdb");
-		devdbTenant.setUrl("jdbc:sqlserver://localhost;databaseName=sm_project;");
-		devdbTenant.setUsername("devdb");
-		devdbTenant.setPassword("P@ssw0rd");
-		
-		testTenant.setId(2);
-		testTenant.setTenantId("test");
-		testTenant.setUrl("jdbc:sqlserver://localhost;databaseName=sm_project;");
-		testTenant.setUsername("test");
-		testTenant.setPassword("P@ssw0rd");
-		
+		devdbTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_DEVDB);
+		testTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_TEST);
+
 		TenantDataSourceProvider.addDataSource(devdbTenant);
 		TenantDataSourceProvider.addDataSource(testTenant);
     }

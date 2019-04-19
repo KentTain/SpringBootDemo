@@ -13,7 +13,11 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * 根据租户ID来提供对应的数据源
+ * @author tianchangjun
+ * @version 1.0
+ */
 public class MsSqlSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider {
 
 	private static Logger logger = LoggerFactory.getLogger(TenantContext.class.getName());

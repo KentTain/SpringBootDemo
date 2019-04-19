@@ -22,8 +22,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 /**
- * 这个类负责根据租户ID来提供对应的数据源
- * @author lanyuanxiaoyao
+ * 根据租户ID来提供对应的数据源
+ * @author tianchangjun
  * @version 1.0
  */
 public class TenantDataSourceProvider {
@@ -31,7 +31,7 @@ public class TenantDataSourceProvider {
     // 使用一个map来存储我们租户和对应的数据源，租户和数据源的信息就是从我们的tenant_info表中读出来
     private static Map<String, ComboPooledDataSource> dataSourceMap = new HashMap<>();
 
-    public static final String DEFAULT_DATABASE_ID = "Default";
+    public static final String DEFAULT_POOL_CONFIG = "default";
     public static final String DEFAULT_SCHEMA = "sa";
     private static final String UserPreString = "U_";
     
@@ -61,6 +61,13 @@ public class TenantDataSourceProvider {
         defaultDataSource.setJdbcUrl(tenantInfo.getUrl());
         defaultDataSource.setUser(tenantInfo.getUsername());
         defaultDataSource.setPassword(tenantInfo.getPassword());
+        defaultDataSource.setMaxIdleTime(180000);
+        defaultDataSource.setMinPoolSize(2);
+        defaultDataSource.setMaxPoolSize(10);
+        defaultDataSource.setInitialPoolSize(3);
+        defaultDataSource.setMaxStatements(1000);
+        defaultDataSource.setMaxConnectionAge(10000);
+        
         try {
 			defaultDataSource.setDriverClass("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (PropertyVetoException e) {
@@ -70,6 +77,7 @@ public class TenantDataSourceProvider {
         dataSourceMap.put(tenantInfo.getTenantId(), defaultDataSource);
     }
     
+    // 清除数据源，并保留默认的数据源设置
     public static void clearDataSource() {
     	dataSourceMap.clear();
     	
@@ -78,12 +86,18 @@ public class TenantDataSourceProvider {
     
     private static void initDataSource()
     {
-    	ComboPooledDataSource defaultDataSource = new ComboPooledDataSource(DEFAULT_DATABASE_ID);
+    	ComboPooledDataSource defaultDataSource = new ComboPooledDataSource(DEFAULT_POOL_CONFIG);
     	defaultDataSource.setDataSourceName("sm_project");
         defaultDataSource.setJdbcUrl("jdbc:sqlserver://localhost;databaseName=sm_project");
         defaultDataSource.setUser(DEFAULT_SCHEMA);
         defaultDataSource.setPassword("P@ssw0rd");
-
+        defaultDataSource.setMaxIdleTime(180000);
+        defaultDataSource.setMinPoolSize(2);
+        defaultDataSource.setMaxPoolSize(10);
+        defaultDataSource.setInitialPoolSize(3);
+        defaultDataSource.setMaxStatements(1000);
+        defaultDataSource.setMaxConnectionAge(10000);
+        
         try {
 			defaultDataSource.setDriverClass("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		} catch (PropertyVetoException e) {

@@ -9,9 +9,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+/**
+  *  定义创建数据源方法
+ * @author tianchangjun
+ * @version 1.0
+ */
 @Configuration // 定义配置信息类
 public class DataSourceConfiguration {
-	/** 定义创建数据源方法 */
 	@Bean(name = "dataSource") // 定义Bean
 	@Qualifier(value = "dataSource")
 	@Primary // 主要的候选者
