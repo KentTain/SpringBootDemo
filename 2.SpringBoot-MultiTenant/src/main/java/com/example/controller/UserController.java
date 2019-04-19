@@ -25,64 +25,21 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.model.User;
 import com.example.service.IUserService;
 
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private IUserService userService;
-
-	// /user/home
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(HttpServletRequest request, Model model) {
-		return "Hello World";
-	}
 	
-	// /user/test?id=1
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(HttpServletRequest request, Model model) {
-		Long userId = Long.parseLong(request.getParameter("id"));
-		User user = null;
-		if (userId == 1) {
-			user = new User();
-	        user.setUserBirthday(new Date());
-	        user.setUserName("James");
-	        user.setUserSalary(15000.0);
-		}
-
-		logger.debug(user.toString());
-		model.addAttribute("user", user);
-		return "index";
-	}
-
-	// /user/showUser?id=1
-	@RequestMapping(value = "/showUser", method = RequestMethod.GET)
+	// /user/detail?id=1
+	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String toIndex(HttpServletRequest request, Model model) {
 		Long userId = Long.parseLong(request.getParameter("id"));
 		User user = this.userService.findById(userId);
 		logger.debug(user.toString());
 		model.addAttribute("user", user);
-		return "showUser";
-	}
-
-	// /user/showUser2?id=1
-	@RequestMapping(value = "/showUser2", method = RequestMethod.GET)
-	public String toIndex2(@RequestParam("id") String id, Model model) {
-		Long userId = Long.parseLong(id);
-		User user = this.userService.findById(userId);
-		logger.debug(user.toString());
-		model.addAttribute("user", user);
-		return "showUser";
-	}
-
-	// /user/showUser3/{id}
-	@RequestMapping(value = "/showUser3/{id}", method = RequestMethod.GET)
-	public String toIndex3(@PathVariable("id") String id, Map<String, Object> model) {
-		Long userId = Long.parseLong(id);
-		User user = this.userService.findById(userId);
-		logger.debug(user.toString());
-		model.put("user", user);
 		return "showUser";
 	}
 

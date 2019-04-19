@@ -55,8 +55,6 @@
                 </exclusion>  
             </exclusions>  
 		</dependency>
-		<!-- Jetty适合长连接应用，就是聊天类的长连接 -->  
-        <!-- 使用Jetty，需要在spring-boot-starter-web排除spring-boot-starter-tomcat，因为SpringBoot默认使用tomcat -->  
         <dependency>  
             <groupId>org.springframework.boot</groupId>  
             <artifactId>spring-boot-starter-jetty</artifactId>  
