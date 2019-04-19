@@ -5,27 +5,27 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "tenant_info")
+//@Entity
+//@Table(name = "tenant_info")
 public class TenantInfo {
 
-    @Id
-    @Column(name = "id")
+	//@Id
+    //@Column(name = "id")
     private Integer id;
 
-    @Column(name = "tenant_id")
+    //@Column(name = "tenant_id")
     private String tenantId;
 
-    @Column(name = "tenant_type")
+    //@Column(name = "tenant_type")
     private String tenantType;
 
-    @Column(name = "url")
+    //@Column(name = "url")
     private String url;
 
-    @Column(name = "username")
+    //@Column(name = "username")
     private String username;
 
-    @Column(name = "password")
+    //@Column(name = "password")
     private String password;
 
     public Integer getId() {
