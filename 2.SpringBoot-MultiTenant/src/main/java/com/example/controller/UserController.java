@@ -2,8 +2,8 @@ package com.example.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.model.User;
@@ -32,7 +31,7 @@ public class UserController {
 
 	@Autowired
 	private IUserService userService;
-	
+
 	// /user/detail?id=1
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String toIndex(HttpServletRequest request, Model model) {

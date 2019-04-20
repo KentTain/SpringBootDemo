@@ -12,7 +12,7 @@ import com.example.model.User;
 
 public interface IUserRepository extends JpaRepository<User, Long> {
 	@Transactional(timeout = 10)
-	@Query(value = "select * from tb_user u where u.user_name = :userName limit 1 lock in share mode", nativeQuery = true)
+	@Query(value = "select top 1 * from tb_user u WITH (ROWLOCK) where u.user_name = :userName", nativeQuery = true)
 	User findByUserName(@Param("userName") String userName);
 
 	@Lock(value = LockModeType.PESSIMISTIC_WRITE)

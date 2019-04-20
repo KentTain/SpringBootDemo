@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.repository;
 
 import java.util.Date;
 
@@ -17,11 +17,10 @@ import com.example.model.TenantInfo;
 import com.example.model.User;
 import com.example.multitenancy.TenantContext;
 import com.example.multitenancy.TenantDataSourceProvider;
-import com.example.repository.UserRepositoryTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserServiceTest {
+public class UserRepositoryTest {
 	private TenantInfo testTenant;
 	private TenantInfo devdbTenant;
 	private Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class.getName());
@@ -41,7 +40,7 @@ public class UserServiceTest {
 	}
 
 	@Autowired
-	private IUserService userService;
+	private IUserRepository userRepository;
 
 	@Test
 	public void test_devdb_tenant() throws Exception {
@@ -49,14 +48,14 @@ public class UserServiceTest {
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 
 		User newUser = new User("devdb-aa1", new Date(), 15000d);
-		User dbUser = userService.insert(newUser);
+		User dbUser = userRepository.save(newUser);
 		Assert.assertEquals(true, dbUser != null);
 		Assert.assertEquals(newUser.getUserName(), dbUser.getUserName());
 
-		User user = userService.findByName("devdb-aa1");
+		User user = userRepository.findByUserName("devdb-aa1");
 		Assert.assertEquals(true, user != null);
 
-		userService.deleteById(user.getUserId());
+		userRepository.delete(user);
 	}
 
 	@Test
@@ -65,14 +64,14 @@ public class UserServiceTest {
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 
 		User newUser = new User("test-aa1", new Date(), 15000d);
-		User dbUser = userService.insert(newUser);
+		User dbUser = userRepository.save(newUser);
 		Assert.assertEquals(true, dbUser != null);
 		Assert.assertEquals(newUser.getUserName(), dbUser.getUserName());
 
-		User user = userService.findByName("test-aa1");
+		User user = userRepository.findByUserName("test-aa1");
 		Assert.assertEquals(true, user != null);
 
-		userService.deleteById(user.getUserId());
+		userRepository.delete(user);
 	}
 
 }
