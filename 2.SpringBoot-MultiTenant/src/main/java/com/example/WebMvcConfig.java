@@ -3,8 +3,6 @@ package com.example;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -104,22 +102,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		logger.info("-----WebMvcConfig configureMessageConverters FastJson-----");
 	}
 
-	@Resource
-	private TenantInterceptor tenantInterceptor;
-
 	/**
-	 * 实现自定义拦截器只需要3步 1、创建我们自己的拦截器类并实现 HandlerInterceptor 接口。
+	 * 实现自定义拦截器只需要3步: 1、创建我们自己的拦截器类并实现 HandlerInterceptor 接口。
 	 * 2、创建一个Java类继承WebMvcConfigurer，并重写 addInterceptors 方法。
 	 * 3、实例化我们自定义的拦截器，然后将对像手动添加到拦截器链中（在addInterceptors方法中添加）。
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-
-		InterceptorRegistration registration = registry.addInterceptor(tenantInterceptor);
-		// 拦截配置
+		InterceptorRegistration registration = registry.addInterceptor(new TenantInterceptor());
+		// 拦截配置l
 		registration.addPathPatterns("/**");
 		// 排除配置
-		registration.excludePathPatterns("/hello");
+		// registration.excludePathPatterns("/hello");
 
 		logger.info("-----WebMvcConfig addInterceptors tenantInterceptor-----");
 	}
