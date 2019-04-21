@@ -36,7 +36,8 @@ public class TenantInterceptor extends HandlerInterceptorAdapter {
 		if (tenant == null)
 			throw new RuntimeException("未找到相关租户信息");
 
-		logger.debug(String.format("-----TenantInterceptor setCurrentTenant %s %s", tenant.getTenantId(), serverName));
+		logger.debug(String.format("-----TenantInterceptor setCurrentTenant %s in domain: %s", tenant.getTenantId(),
+				serverName));
 
 		TenantContext.setCurrentTenant(tenant.getTenantId());
 

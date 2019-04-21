@@ -1,7 +1,5 @@
 package com.example.multitenancy;
 
-import jodd.io.FileUtil;
-
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +19,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.example.model.TenantInfo;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import jodd.io.FileUtil;
+
 /**
  * 根据租户ID来提供对应的数据源
  * 
@@ -34,7 +34,6 @@ public class TenantDataSourceProvider {
 
 	public static final String DEFAULT_POOL_CONFIG = "default";
 	public static final String DEFAULT_SCHEMA = "sa";
-	private static final String UserPreString = "U_";
 
 	/**
 	 * 静态建立一个数据源，也就是我们的默认数据源，假如我们的访问信息里面没有指定tenantId，就使用默认数据源。

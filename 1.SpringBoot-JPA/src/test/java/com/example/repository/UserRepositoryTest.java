@@ -14,7 +14,7 @@ import com.example.repository.IUserRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserRepositoryTests {
+public class UserRepositoryTest {
 
 	@Autowired
 	private IUserRepository userRepository;

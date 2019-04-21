@@ -5,8 +5,10 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import jodd.util.StringUtil;
+
 import com.example.model.TenantInfo;
+
+import jodd.util.StringUtil;
 
 public class TenantContext {
 	private static Logger logger = LoggerFactory.getLogger(TenantContext.class.getName());

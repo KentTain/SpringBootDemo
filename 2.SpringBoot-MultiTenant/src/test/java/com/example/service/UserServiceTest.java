@@ -56,7 +56,7 @@ public class UserServiceTest {
 		User user = userService.findByName("devdb-aa1");
 		Assert.assertEquals(true, user != null);
 
-		userService.deleteById(user.getUserId());
+		// userService.deleteById(user.getUserId());
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class UserServiceTest {
 		User user = userService.findByName("test-aa1");
 		Assert.assertEquals(true, user != null);
 
-		userService.deleteById(user.getUserId());
+		// userService.deleteById(user.getUserId());
 	}
 
 }
