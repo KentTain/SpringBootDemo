@@ -2,6 +2,8 @@ package com.example.multitenancy;
 
 
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,12 +14,13 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MultiTenantIdentifierResolver implements CurrentTenantIdentifierResolver{
-
+	private Logger logger = LoggerFactory.getLogger(MultiTenantIdentifierResolver.class.getName());
 	private final String DEFAULT_TENANT_ID = "devdb";
     // 获取tenantId的逻辑在这个方法里面写
 	@Override
     public String resolveCurrentTenantIdentifier() {
         String tenantId = TenantContext.getCurrentTenant();
+        logger.info("-----MultiTenantIdentifierResolver get tenant: " + tenantId);
         if (tenantId != null) {
             return tenantId;
         }

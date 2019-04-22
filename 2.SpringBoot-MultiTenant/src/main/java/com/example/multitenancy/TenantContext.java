@@ -39,7 +39,7 @@ public class TenantContext {
 	}
 
 	public static void setCurrentTenant(String tenant) {
-		logger.debug("Setting tenant to " + tenant);
+		logger.info("-----Setting tenant to " + tenant);
 		currentTenant.set(tenant);
 	}
 

@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +47,13 @@ public class UserService implements IUserService {
 	@Override
 	public User findByName(String userName) {
 		return this.userDAO.findByUserName(userName);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.example.service.IUserService#findAll()
+	 */
+	@Override
+	public List<User> findAll() {
+		return this.userDAO.findAll();
 	}
 }

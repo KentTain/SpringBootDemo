@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,15 +22,13 @@ public class HelloController {
 
 	@RequestMapping("/hello")
 	public String hello(Locale locale, Model model) {
-		return "Hello World";
-	}
+		model.addAttribute("greeting", "Hello!");
 
-	// /user?id=1
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public User toIndex(HttpServletRequest request, Model model) {
-		Long userId = Long.parseLong(request.getParameter("id"));
-		User user = this.userService.findById(userId);
-		model.addAttribute("user", user);
-		return user;
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);        
+		String formattedDate = dateFormat.format(date);
+		model.addAttribute("currentTime", formattedDate);
+		
+		return "hello world!";
 	}
 }

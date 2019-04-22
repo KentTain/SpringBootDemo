@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="fragments :: head(title=~{::title/text()})">
+		<title>Users : View all</title>
+	</head>
+	<body>
+		<div class="container">
+			<div th:replace="fragments :: navbar"></div>
+			<div class="float-right mt-2">
+				<a class="btn btn-primary btn-sm" href="form.html" th:href="@{/(form)}">Create Message</a>
+			</div>
+			<h4 class="float-left mt-2">Users : View all</h4>
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Birthday</th>
+						<th>Salary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${users.empty}">
+						<td colspan="3">No Users</td>
+					</tr>
+					<tr th:each="user : ${users}">
+						<td th:text="${user.userId}">1</td>
+						<td th:text="${user.userName}">Name</td>
+						<td th:text="${#calendars.format(user.userBirthday)}">July 11,
+							2012 2:17:16 PM CDT</td>
+						<td><a href="view.html" th:href="@{'/' + ${user.userId}}"
+							th:text="${user.userSalary}"> 10000 </a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>

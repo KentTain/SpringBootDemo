@@ -1,25 +1,19 @@
 package com.example.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.model.User;
 import com.example.service.IUserService;
@@ -32,47 +26,37 @@ public class UserController {
 	@Autowired
 	private IUserService userService;
 
-	// /user/detail?id=1
-	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String toIndex(HttpServletRequest request, Model model) {
-		Long userId = Long.parseLong(request.getParameter("id"));
+	// /user/{id}
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ModelAndView detail(@PathVariable String id, Model model) {
+		Long userId = Long.parseLong(id);
 		User user = this.userService.findById(userId);
 		logger.debug(user.toString());
 		model.addAttribute("user", user);
-		return "showUser";
+		return new ModelAndView("user/detail", "user", user);
 	}
 
-	// /user/{id}
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public @ResponseBody User getUserInJson(@PathVariable String id, Map<String, Object> model) {
+	// /userdata/{id}
+	@RequestMapping(value = "/userdata/{id}", method = RequestMethod.GET)
+	public @ResponseBody User getUserData(@PathVariable String id) {
 		Long userId = Long.parseLong(id);
 		User user = this.userService.findById(userId);
 		logger.debug(user.toString());
 		return user;
 	}
 
-	// /user/jsontype/{id}
-	@RequestMapping(value = "/jsontype/{id}", method = RequestMethod.GET)
-	public ResponseEntity<User> getUserInJson2(@PathVariable String id, Map<String, Object> model) {
-		Long userId = Long.parseLong(id);
-		User user = this.userService.findById(userId);
-		logger.debug(user.toString());
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+	// /user/list
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		Iterable<User> users = this.userService.findAll();
+		return new ModelAndView("user/list", "users", users);
 	}
 
-	// /user/upload
-	@RequestMapping(value = "/upload")
-	public String showUploadPage() {
-		return "user_admin/file";
-	}
+	// /usersdata
+	@RequestMapping(value = "/usersdata", method = RequestMethod.GET)
+	public @ResponseBody List<User> getUsersData() {
+		List<User> users = this.userService.findAll();
 
-	@RequestMapping(value = "/doUpload", method = RequestMethod.POST)
-	public String doUploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-		if (!file.isEmpty()) {
-			logger.debug("Process file:{}", file.getOriginalFilename());
-		}
-		FileUtils.copyInputStreamToFile(file.getInputStream(),
-				new File("E:\\", System.currentTimeMillis() + file.getOriginalFilename()));
-		return "succes";
+		return users;
 	}
 }
