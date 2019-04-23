@@ -34,7 +34,7 @@ public class UserController {
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
 		logger.info("------initBinder &&&&" + request.getParameter("userBirthday") + "***" + request.getParameter("username"));
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyyMMdd"), true));
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"), true));
 	}
 	
 	@Autowired

@@ -14,7 +14,7 @@
 		<br/><br/>
 		<div class="with:80%">
 		    <form class="form-horizontal"   th:action="@{/user/edit}" th:object="${user}"  method="post">
-		        <input type="hidden" name="id" th:value="*{userId}" />
+		        <input type="hidden" name="userId" th:value="*{userId}" />
 		        <div class="form-group">
 		            <label for="userName" class="col-sm-2 control-label">userName</label>
 		            <div class="col-sm-10">
