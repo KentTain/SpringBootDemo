@@ -41,10 +41,10 @@ public class TenantDataSourceProvider {
 	// 根据传进来的tenantId决定返回的数据源
 	public static DataSource getTenantDataSource(String tenantId) {
 		if (dataSourceMap.containsKey(tenantId)) {
-			logger.info("-----GetDataSource:" + tenantId);
+			logger.debug("-----GetDataSource:" + tenantId);
 			return dataSourceMap.get(tenantId);
 		} else {
-			logger.info("-----GetDataSource:" + DEFAULT_SCHEMA);
+			logger.debug("-----GetDataSource:" + DEFAULT_SCHEMA);
 			return dataSourceMap.get("Default");
 		}
 	}

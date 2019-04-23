@@ -30,7 +30,7 @@ public class MsSqlDatabaseMultiTenantConnectionProviderImpl
 	 * 返回默认的数据源
 	 */
 	protected DataSource selectAnyDataSource() {
-		logger.info("-----get default tenant: " + TenantDataSourceProvider.DEFAULT_SCHEMA);
+		logger.debug("-----get default tenant: " + TenantDataSourceProvider.DEFAULT_SCHEMA);
 		return TenantDataSourceProvider.getTenantDataSource(TenantDataSourceProvider.DEFAULT_SCHEMA);
 	}
 
@@ -44,7 +44,7 @@ public class MsSqlDatabaseMultiTenantConnectionProviderImpl
 	 * @return 数据源
 	 */
 	protected DataSource selectDataSource(String tenantIdentifier) {
-		logger.info("-----get tenant: " + tenantIdentifier);
+		logger.debug("-----get tenant: " + tenantIdentifier);
 
 		/* 
 		 * PooledDataSource dataSource =

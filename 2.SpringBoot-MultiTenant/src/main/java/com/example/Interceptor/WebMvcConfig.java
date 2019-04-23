@@ -50,7 +50,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addMapping("/**").allowedOrigins("*").allowCredentials(true)
 				.allowedMethods("GET", "POST", "DELETE", "PUT").maxAge(3600 * 24);
 
-		logger.info("-----WebMvcConfig registry Cors-----");
+		logger.debug("-----WebMvcConfig registry Cors-----");
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/v2/api-docs/**")
 				.addResourceLocations("classpath:/META-INF/resources/v2/api-docs/");
 
-		logger.info("-----WebMvcConfig addResourceHandlers-----");
+		logger.debug("-----WebMvcConfig addResourceHandlers-----");
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// 5.将convert添加到converters当中.
 		converters.add(fastJsonHttpMessageConverter);
 
-		logger.info("-----WebMvcConfig configureMessageConverters FastJson-----");
+		logger.debug("-----WebMvcConfig configureMessageConverters FastJson-----");
 	}
 
 	/**
@@ -111,10 +111,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		InterceptorRegistration registration = registry.addInterceptor(new TenantInterceptor());
 		// 拦截配置l
-		registration.addPathPatterns("/user");
+		registration.addPathPatterns("/**");
 		// 排除配置
-		registration.excludePathPatterns("/css");
+		//registration.excludePathPatterns("/css");
 
-		logger.info("-----WebMvcConfig addInterceptors tenantInterceptor-----");
+		logger.debug("-----WebMvcConfig addInterceptors tenantInterceptor-----");
 	}
 }
