@@ -111,9 +111,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		InterceptorRegistration registration = registry.addInterceptor(new TenantInterceptor());
 		// 拦截配置l
-		registration.addPathPatterns("/**");
+		registration.addPathPatterns("/user");
 		// 排除配置
-		// registration.excludePathPatterns("/hello");
+		registration.excludePathPatterns("/css");
 
 		logger.info("-----WebMvcConfig addInterceptors tenantInterceptor-----");
 	}

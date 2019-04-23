@@ -20,14 +20,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class HelloWorldControllerTest {
+public class HelloControllerTest {
 
   
     private MockMvc mvc;
 
     @Before
     public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(new HelloWorldController()).build();
+        mvc = MockMvcBuilders.standaloneSetup(new HelloController()).build();
     }
 
     @Test

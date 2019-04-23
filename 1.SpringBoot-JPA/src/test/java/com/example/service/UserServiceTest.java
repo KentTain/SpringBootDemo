@@ -24,7 +24,7 @@ public class UserServiceTest {
 	@Test
 	public void test() throws Exception {
 		User newUser = new User("aa1", new Date(), 15000d);
-		User dbUser = userService.insert(newUser);
+		User dbUser = userService.save(newUser);
 		Assert.assertEquals(true, dbUser != null);
 		Assert.assertEquals(newUser.getUserName(), dbUser.getUserName());
 		

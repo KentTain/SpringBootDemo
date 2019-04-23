@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 
 import com.example.model.TenantInfo;
 //import com.mchange.v2.c3p0.ComboPooledDataSource;
