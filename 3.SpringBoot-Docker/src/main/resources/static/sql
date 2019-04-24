@@ -1,0 +1,71 @@
+USE [master]
+GO
+
+/****** Object:  Database [sm_project]    Script Date: 2019/4/18 17:12:42 ******/
+CREATE DATABASE [sm_project]
+GO
+
+CREATE LOGIN [devdb] with password=N'P@ssw0rd'
+GO
+
+USE [sm_project]
+GO
+
+/****** Object:  Schema [devdb]    Script Date: 2019/4/18 17:11:48 ******/
+IF NOT EXISTS (
+  SELECT name FROM sys.schemas WHERE name = N'devdb' ) 
+BEGIN
+  EXEC (N'CREATE SCHEMA [devdb]')
+END
+GO
+CREATE USER [U_devdb] FOR LOGIN [DevDB] WITH DEFAULT_SCHEMA=[devdb]
+GO
+GRANT ALTER, CREATE SEQUENCE, DELETE, EXECUTE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION  ON SCHEMA::[devdb] TO [U_devdb]
+GO
+
+CREATE TABLE [devdb].[tb_user](
+	[user_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_name] [nvarchar](50) NULL,
+	[user_birthday] [datetime] NULL,
+	[user_salary] [decimal](18, 4) NULL,
+ CONSTRAINT [PK_tb_user] PRIMARY KEY CLUSTERED 
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [master]
+GO
+
+CREATE LOGIN [test] with password=N'P@ssw0rd'
+GO
+/****** Object:  Schema [test]    Script Date: 2019/4/18 17:11:48 ******/
+IF NOT EXISTS (
+  SELECT name FROM sys.schemas WHERE name = N'test' ) 
+BEGIN
+  EXEC (N'CREATE SCHEMA [test]')
+END
+GO
+CREATE USER [U_test] FOR LOGIN [test] WITH DEFAULT_SCHEMA=[test]
+GO
+GRANT ALTER, CREATE SEQUENCE, DELETE, EXECUTE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION  ON SCHEMA::[test] TO [U_test]
+GO
+
+USE [sm_project]
+GO
+
+CREATE TABLE [test].[tb_user](
+	[user_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_name] [nvarchar](50) NULL,
+	[user_birthday] [datetime] NULL,
+	[user_salary] [decimal](18, 4) NULL,
+ CONSTRAINT [PK_tb_user] PRIMARY KEY CLUSTERED 
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

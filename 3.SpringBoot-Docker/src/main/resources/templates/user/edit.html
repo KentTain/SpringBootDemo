@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="layout :: htmlhead" th:with="title='编辑用户'">
+    <meta charset="UTF-8"/>
+</head>
+<body class="container">
+<div th:replace="layout :: navbar">(navbar)</div>
+    <div th:replace="layout :: navbar">(navbar)</div>
+    
+    <div class="container">
+      <div class="starter-template">
+        <br/>
+		<h1>修改用户</h1>
+		<br/><br/>
+		<div class="with:80%">
+		    <form class="form-horizontal"   th:action="@{/user/edit}" th:object="${user}"  method="post">
+		        <input type="hidden" name="userId" th:value="*{userId}" />
+		        <div class="form-group">
+		            <label for="userName" class="col-sm-2 control-label">userName</label>
+		            <div class="col-sm-10">
+		                <input type="text" class="form-control" name="userName"  id="userName" th:value="*{userName}" placeholder="userName"/>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label for="password" class="col-sm-2 control-label" >Birthday</label>
+		            <div class="col-sm-10">
+		                <input type="text" class="form-control" name="userBirthday" id="userBirthday"  th:value="*{userBirthday}" placeholder="userBirthday"/>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label for="age" class="col-sm-2 control-label">Salary</label>
+		            <div class="col-sm-10">
+		                <input type="text" class="form-control" name="userSalary"  id="userSalary" th:value="*{userSalary}" placeholder="userSalary"/>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <div class="col-sm-offset-2 col-sm-10">
+		                <input type="submit" value="Submit" class="btn btn-info" />
+		                &nbsp; &nbsp; &nbsp;
+		                <a href="/toAdd" th:href="@{/user/list}" class="btn btn-info">Back</a>
+		            </div>
+		
+		        </div>
+		    </form>
+		</div>
+      </div>
+    </div>
+
+    <div th:include="layout :: footer" id="footer">(footer)</div>
+
+</body>
+</html>
