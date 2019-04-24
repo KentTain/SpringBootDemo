@@ -3,7 +3,6 @@ package com.example.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.example.model.User;
 import com.example.service.IUserService;
@@ -33,20 +30,22 @@ public class UserController {
 	// 自定义类型转换器
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-		logger.info("------initBinder &&&&" + request.getParameter("userBirthday") + "***" + request.getParameter("username"));
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"), true));
+		logger.info("------initBinder &&&&" + request.getParameter("userBirthday") + "***"
+				+ request.getParameter("username"));
+		binder.registerCustomEditor(Date.class,
+				new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"), true));
 	}
-	
+
 	@Autowired
 	private IUserService userService;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String index() {
-		return "redirect:user/list";
+		return "redirect:/user/list";
 	}
 
 	// /user/list
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String list(Model model) {
 		List<User> users = this.userService.findAll();
 		model.addAttribute("users", users);
@@ -54,24 +53,24 @@ public class UserController {
 	}
 
 	// /usersdata
-	@RequestMapping("/usersdata")
+	@GetMapping("/usersdata")
 	public @ResponseBody List<User> getUsersData() {
 		List<User> users = this.userService.findAll();
 		return users;
 	}
 
 	// /user/detail/{id}
-	@RequestMapping("/detail/{id}")
-	public ModelAndView detail(@PathVariable String id, Model model) {
+	@GetMapping("/detail/{id}")
+	public String detail(@PathVariable String id, Model model) {
 		Long userId = Long.parseLong(id);
 		User user = this.userService.findById(userId);
-		logger.debug(user.toString());
 		model.addAttribute("user", user);
-		return new ModelAndView("user/detail", "user", user);
+		// return new ModelAndView("user/detail", "user", user);
+		return "user/detail";
 	}
 
 	// /userdata/{id}
-	@RequestMapping("/userdata/{id}")
+	@GetMapping("/userdata/{id}")
 	public @ResponseBody User getUserData(@PathVariable String id) {
 		Long userId = Long.parseLong(id);
 		User user = this.userService.findById(userId);
@@ -79,7 +78,7 @@ public class UserController {
 	}
 
 	// /user/toAdd
-	@RequestMapping("/toAdd")
+	@GetMapping("/toAdd")
 	public String toAdd() {
 		return "user/add";
 	}
@@ -87,12 +86,12 @@ public class UserController {
 	@RequestMapping("/add")
 	public String add(User user) {
 		userService.save(user);
-		return "redirect:/list";
+		return "redirect:/user/list";
 	}
-	
-	// /user/toEdit/{id}
-	@RequestMapping("/toEdit/{id}")
-	public String toEdit(Model model, Long id) {
+
+	// /user/toEdit?id={id}
+	@GetMapping("/toEdit")
+	public String toEdit(Long id, Model model) {
 		User user = userService.findById(id);
 		model.addAttribute("user", user);
 		return "user/edit";
@@ -101,13 +100,13 @@ public class UserController {
 	@RequestMapping("/edit")
 	public String edit(User user) {
 		userService.save(user);
-		return "redirect:/list";
+		return "redirect:/user/list";
 	}
 
 	// /user/delete/{id}
-	@RequestMapping("/delete/{id}")
+	@GetMapping("/delete")
 	public String delete(Long id) {
 		userService.deleteById(id);
-		return "redirect:/list";
+		return "redirect:/user/list";
 	}
 }
