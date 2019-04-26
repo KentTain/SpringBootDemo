@@ -34,9 +34,9 @@ public class MsSqlSchemaMultiTenantConnectionProvider extends AbstractMultiTenan
 	// for MySQL
 	/*
 	 * @Override public Connection getConnection(String tenantIdentifier) throws
-	 * SQLException { Connection connection =
-	 * super.getConnection(tenantIdentifier); connection.createStatement()
-	 * .execute(String.format("use %s;", tenantIdentifier));
+	 * SQLException { Connection connection = super.getConnection(tenantIdentifier);
+	 * connection.createStatement() .execute(String.format("use %s;",
+	 * tenantIdentifier));
 	 * 
 	 * return connection; }
 	 */
@@ -44,8 +44,8 @@ public class MsSqlSchemaMultiTenantConnectionProvider extends AbstractMultiTenan
 	// for Oracle
 	/*
 	 * @Override public Connection getConnection(String tenantIdentifier) throws
-	 * SQLException { Connection connection =
-	 * super.getConnection(tenantIdentifier); connection.createStatement()
+	 * SQLException { Connection connection = super.getConnection(tenantIdentifier);
+	 * connection.createStatement()
 	 * .execute(String.format("ALTER SESSION SET CURRENT_SCHEMA = %s",
 	 * tenantIdentifier)); return connection; }
 	 */
@@ -53,10 +53,9 @@ public class MsSqlSchemaMultiTenantConnectionProvider extends AbstractMultiTenan
 	// for PostgreSQL
 	/*
 	 * @Override public Connection getConnection(String tenantIdentifier) throws
-	 * SQLException { Connection connection =
-	 * super.getConnection(tenantIdentifier); connection.createStatement()
-	 * .execute(String.format("SET search_path TO %s", tenantIdentifier));
-	 * return connection; }
+	 * SQLException { Connection connection = super.getConnection(tenantIdentifier);
+	 * connection.createStatement() .execute(String.format("SET search_path TO %s",
+	 * tenantIdentifier)); return connection; }
 	 */
 
 	private ConnectionProvider initConnectionProvider(String userName, String password) {
@@ -64,7 +63,7 @@ public class MsSqlSchemaMultiTenantConnectionProvider extends AbstractMultiTenan
 			Properties properties = new Properties();
 
 			properties.put(org.hibernate.cfg.AvailableSettings.URL,
-					"jdbc:sqlserver://localhost;databaseName=sm_project;");
+					"jdbc:sqlserver://127.0.0.1;databaseName=sm_project;");
 			properties.put(org.hibernate.cfg.AvailableSettings.USER, UserPreString + userName);
 			properties.put(org.hibernate.cfg.AvailableSettings.PASS, password);
 			properties.put(org.hibernate.cfg.AvailableSettings.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");

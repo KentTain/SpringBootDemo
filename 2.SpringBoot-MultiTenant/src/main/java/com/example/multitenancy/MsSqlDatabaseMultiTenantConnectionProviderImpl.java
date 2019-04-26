@@ -46,7 +46,7 @@ public class MsSqlDatabaseMultiTenantConnectionProviderImpl
 	protected DataSource selectDataSource(String tenantIdentifier) {
 		logger.debug("-----get tenant: " + tenantIdentifier);
 
-		/* 
+		/* //C3P0 pool
 		 * PooledDataSource dataSource =
 		 * C3P0Registry.pooledDataSourceByName(tenantIdentifier); if (dataSource !=
 		 * null) return dataSource;

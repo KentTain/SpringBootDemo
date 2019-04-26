@@ -22,7 +22,7 @@ public class TenantContext {
 		TenantInfo devdbTenant = new TenantInfo();
 		devdbTenant.setId(1);
 		devdbTenant.setTenantId(DEFAULT_TENANTID_DEVDB);
-		devdbTenant.setUrl("jdbc:sqlserver://localhost;databaseName=sm_project;");
+		devdbTenant.setUrl("jdbc:sqlserver://127.0.0.1;databaseName=sm_project;");
 		devdbTenant.setUsername(DEFAULT_TENANTID_DEVDB);
 		devdbTenant.setPassword("P@ssw0rd");
 		devdbTenant.setDomain(DEFAULT_TENANTID_DEVDB + ".domain.com");
@@ -31,7 +31,7 @@ public class TenantContext {
 		TenantInfo testTenant = new TenantInfo();
 		testTenant.setId(2);
 		testTenant.setTenantId(DEFAULT_TENANTID_TEST);
-		testTenant.setUrl("jdbc:sqlserver://localhost;databaseName=sm_project;");
+		testTenant.setUrl("jdbc:sqlserver://127.0.0.1;databaseName=sm_project;");
 		testTenant.setUsername(DEFAULT_TENANTID_TEST);
 		testTenant.setPassword("P@ssw0rd");
 		testTenant.setDomain(DEFAULT_TENANTID_TEST + ".domain.com");
