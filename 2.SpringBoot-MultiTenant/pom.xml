@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>2.SpringBoot-MultiTenant</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>SpringBoot-MultiTenant</artifactId>
+	<version>1.0.0.1-SNAPSHOT</version>
 	<name>2.SpringBoot-MultiTenant</name>
 	<description>Demo project for Spring Boot</description>
 
