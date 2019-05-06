@@ -7,17 +7,20 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.3.RELEASE</version>
+		<version>2.1.4.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>SpringBoot-Docker</artifactId>
+	<artifactId>springBoot-docker</artifactId>
 	<version>1.0.0.1-SNAPSHOT</version>
 	<name>3.SpringBoot-Docker</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<docker.image.prefix>springboot</docker.image.prefix>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 	</properties>
 
 	<dependencies>
@@ -78,7 +81,14 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>1.0.0</version>
 				<configuration>
+					<!-- 镜像名称 -->
 					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<!-- 镜像标签 -->
+					<imageTags>
+						<!--可以指定多个标签 建议弄成自增序列或者时间戳类型，用于区分版本 -->
+						<imageTag>${maven.build.timestamp}</imageTag>
+					</imageTags>
+					<!-- dockerfile文件路径 -->
 					<dockerDirectory>src/main/docker</dockerDirectory>
 					<resources>
 						<resource>

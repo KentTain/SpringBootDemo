@@ -18,9 +18,6 @@ import com.example.service.IUserService;
 
 @Controller
 public class HelloController {
-	@Autowired
-	private IUserService userService;
-
 	@RequestMapping("/hello")
 	public String hello(Locale locale, Model model) {
 		model.addAttribute("greeting", "Hello!");
