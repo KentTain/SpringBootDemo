@@ -18,7 +18,7 @@ import com.example.service.IUserService;
 
 @Controller
 public class HelloController {
-	@RequestMapping("/hello")
+	@RequestMapping("/")
 	public String hello(Locale locale, Model model) {
 		model.addAttribute("greeting", "Hello!");
 
