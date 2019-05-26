@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.multitenancy.demo</groupId>
-    <artifactId>multitenant-demo</artifactId>
+    <artifactId>springboot-multimodule</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>multitenancy-web</artifactId>
@@ -15,7 +15,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
             <groupId>com.multitenancy.demo</groupId>
