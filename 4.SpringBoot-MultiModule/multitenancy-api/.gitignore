@@ -1,7 +1,7 @@
 HELP.md
 /bin/
 target/
-!.mvn/wrapper/maven-wrapper.jar
+target/*
 
 *.tmp
 *.zip

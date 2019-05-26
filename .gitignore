@@ -5,11 +5,13 @@
 *.jar
 *.war
 
-*/**/*.tmp
-*/**/*.zip
-*/**/*.log
-*/**/*.jar
-*/**/*.war
+*/*/*.tmp
+*/*/*.zip
+*/*/*.log
+*/*/*.jar
+*/*/*.war
+
+*/target/*
 
 .idea/*.xml
 .idea/libraries/*.xml
