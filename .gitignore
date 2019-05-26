@@ -3,7 +3,13 @@
 *.zip
 *.log
 *.jar
-*.xml
+*.war
+
+*/**/*.tmp
+*/**/*.zip
+*/**/*.log
+*/**/*.jar
+*/**/*.war
 
 .idea/*.xml
 .idea/libraries/*.xml
