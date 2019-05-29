@@ -30,6 +30,6 @@ public class HelloController {
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("currentTime", formattedDate);
 
-		return "hello";
+		return "hello world";
 	}
 }
