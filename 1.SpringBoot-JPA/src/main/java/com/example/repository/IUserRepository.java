@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.model.User;
 
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface IUserRepository extends IDbRepository<User, Long> {
 	@Transactional(timeout = 10)
 	@Query(value="select * from tb_user u where u.user_name = :userName limit 1 lock in share mode",nativeQuery=true)
     User findByUserName(@Param("userName") String userName);
 	
 	@Lock(value = LockModeType.PESSIMISTIC_WRITE)
 	User findByUserId(String userId);
+	
 }

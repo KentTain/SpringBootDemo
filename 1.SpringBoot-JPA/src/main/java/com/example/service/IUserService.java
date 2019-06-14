@@ -15,4 +15,6 @@ public interface IUserService {
 	void deleteById(Long userId);
 
 	User save(User user);
+	
+	boolean executeSql(String query);
 }

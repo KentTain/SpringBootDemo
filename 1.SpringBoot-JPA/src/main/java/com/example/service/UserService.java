@@ -65,6 +65,11 @@ public class UserService implements IUserService {
 	public User save(User user) {
 		return this.userRepository.save(user);
 	}
+	
+	@Override
+	public boolean executeSql(String query) {
+		return this.userRepository.executeSql(query, null);
+	}
 
 	/*
 	 * //https://blog.csdn.net/alex_fung/article/details/83009100 public Integer

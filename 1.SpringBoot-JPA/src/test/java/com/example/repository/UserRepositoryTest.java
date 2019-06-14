@@ -20,7 +20,13 @@ public class UserRepositoryTest {
 	private IUserRepository userRepository;
 
 	@Test
-	public void test() throws Exception {
+	public void testExecuteSql() throws Exception {
+		boolean success = userRepository.executeSql("select * from tb_user", null);
+		Assert.assertEquals(true, success);
+	}
+	
+	@Test
+	public void testCrud() throws Exception {
 		User newUser = new User("aa1", new Date(), 15000d);
 		User dbUser = userRepository.save(newUser);
 		Assert.assertEquals(true, dbUser != null);
@@ -30,6 +36,7 @@ public class UserRepositoryTest {
 		Assert.assertEquals(true, user != null);
 		
 		userRepository.delete(user);
+
 	}
 
 }
