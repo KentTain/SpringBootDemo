@@ -67,8 +67,8 @@ public class UserService implements IUserService {
 	}
 	
 	@Override
-	public boolean executeSql(String query) {
-		return this.userRepository.executeSql(query, null);
+	public boolean executeUpdateSql(String query) {
+		return this.userRepository.executeUpdateSql(query, null);
 	}
 
 	/*

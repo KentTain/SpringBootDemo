@@ -1,3 +1,4 @@
+----------------------------------------------SQL Server----------------------------------------------------
 USE [master]
 GO
 
@@ -68,4 +69,32 @@ CREATE TABLE [test].[tb_user](
 ) ON [PRIMARY]
 GO
 
+----------------------------------------------MySQL----------------------------------------------------
+CREATE DATABASE `sm_project` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+CREATE TABLE `tb_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `user_name` varchar(30) DEFAULT NULL COMMENT '用户名',
+  `user_birthday` date DEFAULT NULL COMMENT '用户生日',
+  `user_salary` double DEFAULT NULL COMMENT '用户工资',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+
+CREATE TABLE `sm_project`.`tb_menu` (
+  `Id` INT NOT NULL,
+  `ParentId` INT NULL,
+  `Name` VARCHAR(50) NOT NULL,
+  `TreeCode` VARCHAR(45) NULL,
+  `Leaf` TINYINT NULL,
+  `Level` INT NULL,
+  `Index` INT NULL,
+  `Desc` VARCHAR(2000) NULL,
+  `IsDeleted` TINYINT NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `ModifiedBy` VARCHAR(45) NULL,
+  `ModifiedDate` DATE NULL,
+  PRIMARY KEY (`Id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='菜单表';;
 

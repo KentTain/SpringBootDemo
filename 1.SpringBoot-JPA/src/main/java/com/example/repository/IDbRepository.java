@@ -67,8 +67,8 @@ public interface IDbRepository<T extends EntityBase, ID extends Serializable>
 	 * boolean UpdateExtendFieldsByFilter(Predicate<K> predicate);
 	 */
 
-	boolean executeSql(String query, Object... parameters);
+	boolean executeUpdateSql(String updateSql, Object... parameters);
 
-	/* <K> List<K> SqlQuery(String query); */
+	 <K extends EntityBase> List<K> sqlQuery(String selectSql); 
 
 }

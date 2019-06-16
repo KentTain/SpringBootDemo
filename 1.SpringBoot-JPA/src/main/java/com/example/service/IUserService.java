@@ -16,5 +16,5 @@ public interface IUserService {
 
 	User save(User user);
 	
-	boolean executeSql(String query);
+	boolean executeUpdateSql(String query);
 }

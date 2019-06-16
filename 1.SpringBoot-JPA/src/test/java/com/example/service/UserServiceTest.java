@@ -24,8 +24,8 @@ public class UserServiceTest {
 	private IUserService userService;  
 	
 	@Test
-	public void testExecuteSql() throws Exception {
-		boolean success = userService.executeSql("select * from t_user");
+	public void testExecuteUpdateSql() throws Exception {
+		boolean success = userService.executeUpdateSql("update tb_user set `user_name` = 'test-aa-1-modified' where `user_id` = 1;");
 		Assert.assertEquals(true, success);
 	}
 	
