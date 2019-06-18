@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.model.TenantInfo;
-//import com.mchange.v2.c3p0.C3P0Registry;
-//import com.mchange.v2.c3p0.PooledDataSource;
 
 /**
  * 指定了 ConnectionProvider，即 Hibernate 需要知道如何以租户特有的方式获取数据连接
@@ -46,12 +44,6 @@ public class MsSqlDatabaseMultiTenantConnectionProviderImpl
 	protected DataSource selectDataSource(String tenantIdentifier) {
 		logger.debug("-----get tenant: " + tenantIdentifier);
 
-		/* //C3P0 pool
-		 * PooledDataSource dataSource =
-		 * C3P0Registry.pooledDataSourceByName(tenantIdentifier); if (dataSource !=
-		 * null) return dataSource;
-		 */
-		
 		DataSource ds = TenantDataSourceProvider.getTenantDataSource(tenantIdentifier);
 		if (ds != null)
 			return ds;

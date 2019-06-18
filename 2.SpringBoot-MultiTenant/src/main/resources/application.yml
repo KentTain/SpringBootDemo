@@ -1,0 +1,39 @@
+server:
+  port: 9082
+spring:
+  application:
+    name: Bootstrap Spring Boot
+  datasource:
+    tomcat:
+      initial-size: 20
+      max-active: 300
+      max-wait: 10000
+      test-on-borrow: true
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://127.0.0.1;databaseName=sm_project;
+    username: sa
+    password: P@ssw0rd
+  devtools:
+    restart:
+      enabled: true
+      exclude: WEB-INF/**
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        multiTenancy: SCHEMA
+        multi_tenant_connection_provider: com.example.multitenancy.MsSqlDatabaseMultiTenantConnectionProviderImpl
+        tenant_identifier_resolver: com.example.multitenancy.MultiTenantIdentifierResolver
+    show-sql: true
+  output:
+    ansi:
+      enabled: DETECT
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
