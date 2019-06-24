@@ -28,8 +28,8 @@ public class MsSqlDatabaseMultiTenantConnectionProviderImpl
 	 * 返回默认的数据源
 	 */
 	protected DataSource selectAnyDataSource() {
-		logger.debug("-----get default tenant: " + TenantDataSourceProvider.DEFAULT_SCHEMA);
-		return TenantDataSourceProvider.getTenantDataSource(TenantDataSourceProvider.DEFAULT_SCHEMA);
+		logger.debug("-----get default tenant: " + TenantContext.DEFAULT_TENANTID_DEVDB);
+		return TenantDataSourceProvider.getTenantDataSource(TenantContext.DEFAULT_TENANTID_DEVDB);
 	}
 
 	@Autowired

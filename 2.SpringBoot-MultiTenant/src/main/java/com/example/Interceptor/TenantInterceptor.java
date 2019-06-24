@@ -16,7 +16,6 @@ import com.example.multitenancy.TenantDataSourceProvider;
  * 根据用户的域名获取相对应的租户信息，并设置到TenantContext中
  * 
  * @author tianchangjun
- * @version 1.0
  */
 
 @SuppressWarnings("all")

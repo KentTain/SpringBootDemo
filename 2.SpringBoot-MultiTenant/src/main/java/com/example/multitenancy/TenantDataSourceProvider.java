@@ -26,7 +26,6 @@ public class TenantDataSourceProvider {
 	private static Map<String, DataSource> dataSourceMap = new HashMap<>();
 
 	public static final String DEFAULT_POOL_CONFIG = "default";
-	public static final String DEFAULT_SCHEMA = "sa";
 
 	/**
 	 * 静态建立一个数据源，也就是我们的默认数据源，假如我们的访问信息里面没有指定tenantId，就使用默认数据源。
@@ -42,7 +41,7 @@ public class TenantDataSourceProvider {
 			logger.debug("-----GetDataSource:" + tenantId);
 			return dataSourceMap.get(tenantId);
 		} else {
-			logger.debug("-----GetDataSource:" + DEFAULT_SCHEMA);
+			logger.debug("-----GetDataSource:" + TenantContext.DEFAULT_TENANTID_DEVDB);
 			return dataSourceMap.get("Default");
 		}
 	}
@@ -67,6 +66,8 @@ public class TenantDataSourceProvider {
 		 * 
 		 * dataSourceMap.put(tenantInfo.getTenantId(), defaultDataSource);
 		 */
+		
+		logger.debug("-----addDataSource ConnectionString:" + tenantInfo.getUrl());
 		
 		//com.zaxxer.hikari
 		HikariConfig config = new HikariConfig();
@@ -122,10 +123,10 @@ public class TenantDataSourceProvider {
 		//com.zaxxer.hikari
 		HikariConfig config = new HikariConfig();
 		config.setPoolName(DEFAULT_POOL_CONFIG);
-		config.setSchema(DEFAULT_SCHEMA);
+		config.setSchema(TenantContext.DEFAULT_TENANTID_DEVDB);
 		config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 		config.setJdbcUrl("jdbc:sqlserver://localhost;databaseName=sm_project");
-		config.setUsername(DEFAULT_SCHEMA);
+		config.setUsername(TenantContext.DEFAULT_TENANTID_DEVDB);
 		config.setPassword("P@ssw0rd");
 		config.setConnectionTimeout(30000);
 		config.setIdleTimeout(600000);
@@ -139,7 +140,7 @@ public class TenantDataSourceProvider {
 		
 		HikariDataSource ds = new HikariDataSource(config);
 
-		dataSourceMap.put(DEFAULT_SCHEMA, ds);
+		dataSourceMap.put(TenantContext.DEFAULT_TENANTID_DEVDB, ds);
 	}
 
 }

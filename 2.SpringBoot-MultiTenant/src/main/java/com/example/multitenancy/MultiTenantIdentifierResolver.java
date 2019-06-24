@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MultiTenantIdentifierResolver implements CurrentTenantIdentifierResolver{
 	private Logger logger = LoggerFactory.getLogger(MultiTenantIdentifierResolver.class.getName());
-	private final String DEFAULT_TENANT_ID = "devdb";
     // 获取tenantId的逻辑在这个方法里面写
 	@Override
     public String resolveCurrentTenantIdentifier() {
@@ -24,7 +23,7 @@ public class MultiTenantIdentifierResolver implements CurrentTenantIdentifierRes
         if (tenantId != null) {
             return tenantId;
         }
-        return DEFAULT_TENANT_ID;
+        return TenantContext.DEFAULT_TENANTID_DEVDB;
     }
     @Override
     public boolean validateExistingCurrentSessions() {

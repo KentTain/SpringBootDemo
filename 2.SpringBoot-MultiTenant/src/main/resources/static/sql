@@ -36,6 +36,34 @@ CREATE TABLE [devdb].[tb_user](
 GO
 
 
+CREATE TABLE [devdb].[tb_menu](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ParentId] [int] NULL,
+	[Name] [nvarchar](128) NULL,
+	[TreeCode] [nvarchar](128) NULL,
+	[Leaf] [bit] NOT NULL,
+	[Level] [int] NOT NULL,
+	[Desc] [nvarchar](512) NULL,
+	[Index] [int] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[CreatedBy] [nvarchar](max) NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [nvarchar](max) NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_dba.sys_MenuNode] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [devdb].[tb_menu]  WITH CHECK ADD  CONSTRAINT [FK_devdb.tb_menu_devdb.tb_menu_ParentId] FOREIGN KEY([ParentId])
+REFERENCES [devdb].[tb_menu] ([Id])
+GO
+
+ALTER TABLE [devdb].[tb_menu] CHECK CONSTRAINT [FK_devdb.tb_menu_devdb.tb_menu_ParentId]
+GO
+
 USE [master]
 GO
 
@@ -69,3 +97,30 @@ CREATE TABLE [test].[tb_user](
 GO
 
 
+CREATE TABLE [test].[tb_menu](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ParentId] [int] NULL,
+	[Name] [nvarchar](128) NULL,
+	[TreeCode] [nvarchar](128) NULL,
+	[Leaf] [bit] NOT NULL,
+	[Level] [int] NOT NULL,
+	[Desc] [nvarchar](512) NULL,
+	[Index] [int] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[CreatedBy] [nvarchar](max) NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[ModifiedBy] [nvarchar](max) NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_dba.sys_MenuNode] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [test].[tb_menu]  WITH CHECK ADD  CONSTRAINT [FK_test.tb_menu_test.tb_menu_ParentId] FOREIGN KEY([ParentId])
+REFERENCES [test].[tb_menu] ([Id])
+GO
+
+ALTER TABLE [test].[tb_menu] CHECK CONSTRAINT [FK_test.tb_menu_test.tb_menu_ParentId]
+GO
