@@ -11,15 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
-import com.example.StringExtensions;
-
-import javax.persistence.InheritanceType;
 //import org.springframework.lang.Nullable;
 //import org.springframework.data.annotation.Id;
 
@@ -51,7 +47,7 @@ public abstract class TreeNode<T> extends Entity implements Serializable {
 	// @Id,
 	// @GeneratedValue(strategy = GenerationType.IDENTITY),
 	// @Column(name = "Id", unique = true, nullable = false)})
-	private int id;
+	private int Id;
 
 	/**
 	 * 父节点Id
@@ -111,19 +107,19 @@ public abstract class TreeNode<T> extends Entity implements Serializable {
 
 		TreeNode<T> node = (TreeNode<T>) o;
 
-		if (!(getId() == node.getId()))
+		if (Id != node.Id)
 			return false;
-		if (!getName().equals(node.getName()))
+		if (Name != null ? !Name.equals(node.Name) : node.Name != null)
 			return false;
-		if (!getTreeCode().equals(node.getTreeCode()))
+		if (Name != null ? !TreeCode.equals(node.TreeCode) : node.TreeCode != null)
 			return false;
-		if (!(getLevel() == node.getLevel()))
+		if (Level != node.Level)
 			return false;
-		if (!isLeaf() && node.isLeaf())
+		if (!Leaf && node.Leaf)
 			return false;
-		if (isLeaf() && !node.isLeaf())
+		if (Leaf && !node.Leaf)
 			return false;
-		if (!(getIndex() == node.getIndex()))
+		if (Index != node.Index)
 			return false;
 		return true;
 	}
@@ -131,14 +127,12 @@ public abstract class TreeNode<T> extends Entity implements Serializable {
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 31 * result + getId();
-		if (!StringExtensions.isNullOrEmpty(getName()))
-			result = 31 * result + getName().hashCode();
-		if (!StringExtensions.isNullOrEmpty(getTreeCode()))
-			result = 31 * result + getTreeCode().hashCode();
-		result = 31 * result + getLevel();
-		result = 31 * result + new Boolean(isLeaf()).hashCode();
-		result = 31 * result + getIndex();
+		result = 31 * result + Id;
+		result = 31 * result + (Name != null ? Name.hashCode() : 0 );
+		result = 31 * result + (TreeCode != null ? TreeCode.hashCode() : 0 );
+		result = 31 * result + Level;
+		result = 31 * result + new Boolean(Leaf).hashCode();
+		result = 31 * result + Index;
 		return result;
 	}
 }

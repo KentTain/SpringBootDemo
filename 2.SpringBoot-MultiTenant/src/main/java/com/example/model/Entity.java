@@ -7,8 +7,6 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.example.StringExtensions;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,17 +51,17 @@ public abstract class Entity extends EntityBase implements Serializable {
 
 		Entity entity = (Entity) o;
 
-		if (!getCreatedBy().equals(entity.getCreatedBy()))
+		if (CreatedBy != null ? !CreatedBy.equals(entity.CreatedBy) : entity.CreatedBy != null)
 			return false;
-		if (!getCreatedDate().equals(entity.getCreatedDate()))
+		if (CreatedDate != null ? !CreatedDate.equals(entity.CreatedDate) : entity.CreatedDate != null)
 			return false;
-		if (!getModifiedBy().equals(entity.getModifiedBy()))
+		if (ModifiedBy != null ? !ModifiedBy.equals(entity.ModifiedBy) : entity.ModifiedBy != null)
 			return false;
-		if (!getModifiedDate().equals(entity.getModifiedDate()))
+		if (ModifiedDate != null ? !ModifiedDate.equals(entity.ModifiedDate) : entity.ModifiedDate != null)
 			return false;
-		if (isIsDeleted() && !entity.isIsDeleted())
+		if (IsDeleted && !entity.IsDeleted)
 			return false;
-		if (!isIsDeleted() && entity.isIsDeleted())
+		if (!IsDeleted && entity.IsDeleted)
 			return false;
 		return true;
 	}
@@ -71,13 +69,11 @@ public abstract class Entity extends EntityBase implements Serializable {
 	@Override
 	public int hashCode() {
 		int result = super.hashCode();
-		if (!StringExtensions.isNullOrEmpty(getCreatedBy()))
-			result = 31 * result + getCreatedBy().hashCode();
-		result = 31 * result + getCreatedDate().hashCode();
-		if (!StringExtensions.isNullOrEmpty(getModifiedBy()))
-			result = 31 * result + getModifiedBy().hashCode();
-		result = 31 * result + getModifiedDate().hashCode();
-		result = 31 * result + new Boolean(isIsDeleted()).hashCode();
+		result = 31 * result + (CreatedBy != null ? CreatedBy.hashCode() : 0 );
+		result = 31 * result + (CreatedDate != null ? CreatedDate.hashCode() : 0 );
+		result = 31 * result + (ModifiedBy != null ? ModifiedBy.hashCode() : 0 );
+		result = 31 * result + (ModifiedDate != null ? ModifiedDate.hashCode() : 0 );
+		result = 31 * result + new Boolean(IsDeleted).hashCode();
 		return result;
 	}
 }
