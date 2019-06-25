@@ -43,7 +43,7 @@ public class UserRepositoryTest {
 	private IUserRepository userRepository;
 
 	@Test
-	public void test_devdb_tenant() throws Exception {
+	public void test_user_devdb_crud() throws Exception {
 		TenantContext.setCurrentTenant(devdbTenant.getUsername());
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 
@@ -59,7 +59,7 @@ public class UserRepositoryTest {
 	}
 
 	@Test
-	public void test_test_tenant() throws Exception {
+	public void test_user_test_crud() throws Exception {
 		TenantContext.setCurrentTenant(testTenant.getUsername());
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 

@@ -24,7 +24,7 @@ import lombok.Setter;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class MenuNode extends TreeNode<MenuNode> implements Serializable{
 	private static final long serialVersionUID = 3862416351900991824L;
-
+	
 	@Column(name = "Desc")
 	private String Desc;
 }
