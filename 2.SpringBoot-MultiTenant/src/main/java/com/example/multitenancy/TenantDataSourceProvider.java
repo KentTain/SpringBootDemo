@@ -73,7 +73,7 @@ public class TenantDataSourceProvider {
 		HikariConfig config = new HikariConfig();
 		config.setPoolName(tenantInfo.getTenantId());
 		config.setSchema(tenantInfo.getTenantId());
-		config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+		config.setDriverClassName(TenantContext.DEFAULT_DRIVER_CLASS);
 		config.setJdbcUrl(tenantInfo.getUrl());
 		config.setUsername(tenantInfo.getUsername());
 		config.setPassword(tenantInfo.getPassword());
@@ -124,10 +124,10 @@ public class TenantDataSourceProvider {
 		HikariConfig config = new HikariConfig();
 		config.setPoolName(DEFAULT_POOL_CONFIG);
 		config.setSchema(TenantContext.DEFAULT_TENANTID_DEVDB);
-		config.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		config.setJdbcUrl("jdbc:sqlserver://localhost;databaseName=sm_project");
+		config.setDriverClassName(TenantContext.DEFAULT_DRIVER_CLASS);
+		config.setJdbcUrl(TenantContext.DEFAULT_JDBC_URL);
 		config.setUsername(TenantContext.DEFAULT_TENANTID_DEVDB);
-		config.setPassword("P@ssw0rd");
+		config.setPassword(TenantContext.DEFAULT_TENANT_PASSWORD);
 		config.setConnectionTimeout(30000);
 		config.setIdleTimeout(600000);
 		config.setMaxLifetime(1800000);

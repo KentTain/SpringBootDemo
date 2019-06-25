@@ -40,8 +40,17 @@ public class UserRepositoryTest {
 
 	@Test
 	public void testExecuteUpdateSql() throws Exception {
+		User newUser = new User("aa1", new Date(), 15000d);
+		User dbUser = userRepository.save(newUser);
+		Assert.assertEquals(true, dbUser != null);
+		
 		boolean success = userRepository.executeUpdateSql("update tb_user set `user_name` = 'test-aa-1-modified' where `user_id` = 1;", null);
 		Assert.assertEquals(true, success);
+		
+		User user = userRepository.findByUserName("test-aa-1-modified");
+		Assert.assertEquals(true, user != null);
+		
+		userRepository.delete(user);
 	}
 	
 	@Test
