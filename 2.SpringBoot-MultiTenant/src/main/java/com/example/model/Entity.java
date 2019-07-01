@@ -23,7 +23,7 @@ import lombok.Setter;
 @AttributeOverride(name = "modified_date", column = @Column(name = "ModifiedDate"))
 @AttributeOverride(name = "is_deleted", column = @Column(name = "IsDeleted"))
 public abstract class Entity extends EntityBase implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3862416351900991824L;
 
 	@Column(name = "isdeleted")
 	private boolean IsDeleted;

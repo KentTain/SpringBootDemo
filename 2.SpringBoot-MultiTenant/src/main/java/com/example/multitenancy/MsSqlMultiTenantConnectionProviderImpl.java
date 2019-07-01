@@ -16,9 +16,9 @@ import com.example.model.TenantInfo;
  * @author tianchangjun
  * @version 1.0
  */
-public class MsSqlDatabaseMultiTenantConnectionProviderImpl
+public class MsSqlMultiTenantConnectionProviderImpl
 		extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
-	private Logger logger = LoggerFactory.getLogger(MsSqlDatabaseMultiTenantConnectionProviderImpl.class.getName());
+	private Logger logger = LoggerFactory.getLogger(MsSqlMultiTenantConnectionProviderImpl.class.getName());
 	/**
 	 * 
 	 */

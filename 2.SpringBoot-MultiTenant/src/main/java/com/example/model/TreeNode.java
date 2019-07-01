@@ -14,6 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 
 //import org.springframework.lang.Nullable;
@@ -32,8 +35,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-@AttributeOverride(name = "parent_id", column = @Column(name = "ParentId"))
-@AttributeOverride(name = "tree_code", column = @Column(name = "TreeCode"))
+@AttributeOverride(name="parent_id",column=@Column(name="ParentId"))
+@AttributeOverride(name="tree_code",column=@Column(name="TreeCode"))
+//@NamedEntityGraph(name = "TreeNode.Graph", attributeNodes = {@NamedAttributeNode("ChildNodes")})
+@NamedEntityGraphs({
+    @NamedEntityGraph(name = "Graph.TreeNode.ChildNodes",
+            attributeNodes = {@NamedAttributeNode("items")})
+})
 public abstract class TreeNode<T> extends Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 

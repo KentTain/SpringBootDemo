@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.model.MenuNode;
 import com.example.model.User;
 
-public interface IMenuRepository extends JpaRepository<MenuNode, Integer> {
+public interface IMenuRepository extends ITreeNodeRepository<MenuNode, Integer> {
 	@Transactional(timeout = 10)
 	@Query(value = "select top 1 * from tb_menu u WITH (ROWLOCK) where u.Name = :name", nativeQuery = true)
 	MenuNode findByName(@Param("name") String name);

@@ -26,7 +26,7 @@ spring:
         hbm2ddl:
           auto: update
         multiTenancy: SCHEMA
-        multi_tenant_connection_provider: com.example.multitenancy.MsSqlDatabaseMultiTenantConnectionProviderImpl
+        multi_tenant_connection_provider: com.example.multitenancy.MsSqlMultiTenantConnectionProviderImpl
         tenant_identifier_resolver: com.example.multitenancy.MultiTenantIdentifierResolver
         globally_quoted_identifiers: true
         enable_lazy_load_no_trans: true
