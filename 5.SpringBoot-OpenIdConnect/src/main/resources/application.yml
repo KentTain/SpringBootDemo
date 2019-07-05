@@ -1,7 +1,45 @@
-security:
-  oauth2:
-    resource:
-      jwk:
-        key-set-uri: http://localhost:5588/.well-known/openid-configuration/jwks
-      token-type: Bearer
-      token-info-uri: http://localhost:5588/connect/token
+server:
+  port: 1003
+  #tomcat 请求设置
+  tomcat:
+    uri-encoding: UTF-8
+    max-connections: 3000
+    max-http-post-size: 1048576
+    max-threads: 1000
+  max-http-header-size: 1048576
+spring:
+  application:
+    name: Bootstrap Spring Boot
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: P@ssw0rd
+    url: jdbc:mysql://localhost:3306/sm_project?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+  devtools:
+    restart:
+      enabled: true
+      exclude: WEB-INF/**
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        naming:
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  output:
+    ansi:
+      enabled: DETECT
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+  servlet:
+    multipart:
+      max-file-size: 1MB # Max file size.
+      max-request-size: 10MB # Max request size.
+            
