@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
@@ -12,13 +14,14 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 
 public class IdSvrAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
-    private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
+	private Logger logger = LoggerFactory.getLogger(IdSvrAuthorizationRequestResolver.class);
+	private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
 
     public static final String RegistrationId_IdentityServer4 = "idsvr";
     public IdSvrAuthorizationRequestResolver(
             ClientRegistrationRepository clientRegistrationRepository) {
 
-        this.defaultAuthorizationRequestResolver =
+    	this.defaultAuthorizationRequestResolver =
                 new DefaultOAuth2AuthorizationRequestResolver(
                         clientRegistrationRepository, "/oauth2/authorization");
     }
@@ -58,6 +61,7 @@ public class IdSvrAuthorizationRequestResolver implements OAuth2AuthorizationReq
         	additionalParameters.put("tenantName", "cDba");
             //additionalParameters.put("nonce", "636979019622168388.N2U0MDI5N2UtY2IyYi00OTJjLThiYmItYTQwZjBhYTdjMGRiNDQ5NTk3MmQtNzQyYi00ZTc5LThhYzMtY2JlNzI4M2MwZWZh");
         }
+        logger.debug("----IdSvrAuthorizationRequestResolver customAuthorizationRequest: " + registrationId);
         
         //创建默认OAuth2AuthorizationRequest的副本，该副本返回OAuth2AuthorizationRequest.Builder以进行进一步修改
         return OAuth2AuthorizationRequest.from(authorizationRequest)

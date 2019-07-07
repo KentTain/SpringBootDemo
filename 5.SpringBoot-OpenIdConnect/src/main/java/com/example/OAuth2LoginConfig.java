@@ -1,10 +1,7 @@
 package com.example;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,24 +20,33 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 
 @Configuration
 public class OAuth2LoginConfig {
-
+	private Logger logger = LoggerFactory.getLogger(OAuth2LoginConfig.class);
+	
     @EnableWebSecurity
     public static class OAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
     	@Autowired
         private ClientRegistrationRepository clientRegistrationRepository;
-
+    	@Autowired
+    	private IdSvrAuthenticationSuccessHandler successHandler;
+    	
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .authorizeRequests()
                     .anyRequest().authenticated()
                     .and()
+                
                 .oauth2Login()
+                
+                .successHandler(successHandler)
                 .authorizationEndpoint()
+                	
                 	.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 	                //1. 配置自定义OAuth2AuthorizationRequestResolver
 	                .authorizationRequestResolver(new IdSvrAuthorizationRequestResolver(this.clientRegistrationRepository))
 	                .and()
+	                //.exceptionHandling().authenticationEntryPoint(new AuthenticationProcessingFilterEntryPoint("/signIn"))
+	                   
 	            ; 
         }
         
@@ -55,6 +61,8 @@ public class OAuth2LoginConfig {
     }
 
     private ClientRegistration idsvrClientRegistration() {
+    	logger.debug("----OAuth2LoginConfig idsvrClientRegistration: " + IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4);
+
         return ClientRegistration.withRegistrationId(IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4)
             .clientId("Y0RiYQ==")
             .clientName("cDba")
@@ -62,9 +70,10 @@ public class OAuth2LoginConfig {
             .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .scope("openid", "profile", "adminapi")
+            //.userNameAttributeName("SubjectId")
             .userNameAttributeName(IdTokenClaimNames.SUB)
-            .redirectUriTemplate("{baseUrl}/oidc/signin-callback")
-            //.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+            //.redirectUriTemplate("{baseUrl}/oidc/signin-callback")
+            .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
             .authorizationUri("http://localhost:1001/connect/authorize")
             .tokenUri("http://localhost:1001/connect/token")
             .userInfoUri("http://localhost:1001/connect/userinfo")
