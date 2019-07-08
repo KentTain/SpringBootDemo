@@ -18,6 +18,10 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 
+import com.example.util.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.example.util.IdSvrAuthenticationSuccessHandler;
+import com.example.util.IdSvrAuthorizationRequestResolver;
+
 @Configuration
 public class OAuth2LoginConfig {
 	private Logger logger = LoggerFactory.getLogger(OAuth2LoginConfig.class);
@@ -51,7 +55,9 @@ public class OAuth2LoginConfig {
         }
         
         private AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
-            return new HttpSessionOAuth2AuthorizationRequestRepository();
+            //return new HttpSessionOAuth2AuthorizationRequestRepository();
+        	final int shortLivedMillis = 15 * 60 * 1000; // 15 minutes
+        	return new HttpCookieOAuth2AuthorizationRequestRepository(shortLivedMillis);
         }
     }
     
@@ -61,12 +67,12 @@ public class OAuth2LoginConfig {
     }
 
     private ClientRegistration idsvrClientRegistration() {
-    	logger.debug("----OAuth2LoginConfig idsvrClientRegistration: " + IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4);
+    	System.out.println("----OAuth2LoginConfig idsvrClientRegistration: " + IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4);
 
         return ClientRegistration.withRegistrationId(IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4)
             .clientId("Y0RiYQ==")
             .clientName("cDba")
-            .clientSecret("M2Y5NzAwMDkzYTIyYzRiNzE0YzBmYWU1N2Q2MmRjNTM=")
+            .clientSecret("MmJmNWIyM2Q5ZjY4OWU5YzFmYWVkZTUwNzY2ZWJkNTg=")
             .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .scope("openid", "profile", "adminapi")

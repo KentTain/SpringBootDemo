@@ -1,4 +1,4 @@
-package com.example;
+package com.example.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -61,7 +61,7 @@ public class IdSvrAuthorizationRequestResolver implements OAuth2AuthorizationReq
         	additionalParameters.put("tenantName", "cDba");
             //additionalParameters.put("nonce", "636979019622168388.N2U0MDI5N2UtY2IyYi00OTJjLThiYmItYTQwZjBhYTdjMGRiNDQ5NTk3MmQtNzQyYi00ZTc5LThhYzMtY2JlNzI4M2MwZWZh");
         }
-        logger.debug("----IdSvrAuthorizationRequestResolver customAuthorizationRequest: " + registrationId);
+        System.out.println("----IdSvrAuthorizationRequestResolver customAuthorizationRequest: " + registrationId);
         
         //创建默认OAuth2AuthorizationRequest的副本，该副本返回OAuth2AuthorizationRequest.Builder以进行进一步修改
         return OAuth2AuthorizationRequest.from(authorizationRequest)
