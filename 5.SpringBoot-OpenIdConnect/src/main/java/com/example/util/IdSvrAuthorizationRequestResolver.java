@@ -56,7 +56,8 @@ public class IdSvrAuthorizationRequestResolver implements OAuth2AuthorizationReq
     	String registrationId = this.resolveRegistrationId(authorizationRequest);
     	//将自定义参数添加到现有OAuth2AuthorizationRequest.additionalParameters
         Map<String, Object> additionalParameters = new LinkedHashMap<>(authorizationRequest.getAdditionalParameters());
-        if(registrationId == RegistrationId_IdentityServer4) {
+        if (registrationId == RegistrationId_IdentityServer4) {
+        	additionalParameters.put("acr_values", "idp%3Aidsvr");
         	additionalParameters.put("acr_values", "tenant%3AcDba");
         	additionalParameters.put("tenantName", "cDba");
             //additionalParameters.put("nonce", "636979019622168388.N2U0MDI5N2UtY2IyYi00OTJjLThiYmItYTQwZjBhYTdjMGRiNDQ5NTk3MmQtNzQyYi00ZTc5LThhYzMtY2JlNzI4M2MwZWZh");

@@ -1,0 +1,100 @@
+----------------------------------------------SQL Server----------------------------------------------------
+USE [master]
+GO
+
+/****** Object:  Database [sm_project]    Script Date: 2019/4/18 17:12:42 ******/
+CREATE DATABASE [sm_project]
+GO
+
+CREATE LOGIN [devdb] with password=N'P@ssw0rd'
+GO
+
+USE [sm_project]
+GO
+
+/****** Object:  Schema [devdb]    Script Date: 2019/4/18 17:11:48 ******/
+IF NOT EXISTS (
+  SELECT name FROM sys.schemas WHERE name = N'devdb' ) 
+BEGIN
+  EXEC (N'CREATE SCHEMA [devdb]')
+END
+GO
+CREATE USER [U_devdb] FOR LOGIN [DevDB] WITH DEFAULT_SCHEMA=[devdb]
+GO
+GRANT ALTER, CREATE SEQUENCE, DELETE, EXECUTE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION  ON SCHEMA::[devdb] TO [U_devdb]
+GO
+
+CREATE TABLE [devdb].[tb_user](
+	[user_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_name] [nvarchar](50) NULL,
+	[user_birthday] [datetime] NULL,
+	[user_salary] [decimal](18, 4) NULL,
+ CONSTRAINT [PK_tb_user] PRIMARY KEY CLUSTERED 
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+USE [master]
+GO
+
+CREATE LOGIN [test] with password=N'P@ssw0rd'
+GO
+/****** Object:  Schema [test]    Script Date: 2019/4/18 17:11:48 ******/
+IF NOT EXISTS (
+  SELECT name FROM sys.schemas WHERE name = N'test' ) 
+BEGIN
+  EXEC (N'CREATE SCHEMA [test]')
+END
+GO
+CREATE USER [U_test] FOR LOGIN [test] WITH DEFAULT_SCHEMA=[test]
+GO
+GRANT ALTER, CREATE SEQUENCE, DELETE, EXECUTE, INSERT, REFERENCES, SELECT, TAKE OWNERSHIP, UPDATE, VIEW CHANGE TRACKING, VIEW DEFINITION  ON SCHEMA::[test] TO [U_test]
+GO
+
+USE [sm_project]
+GO
+
+CREATE TABLE [test].[tb_user](
+	[user_id] [int] IDENTITY(1,1) NOT NULL,
+	[user_name] [nvarchar](50) NULL,
+	[user_birthday] [datetime] NULL,
+	[user_salary] [decimal](18, 4) NULL,
+ CONSTRAINT [PK_tb_user] PRIMARY KEY CLUSTERED 
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+----------------------------------------------MySQL----------------------------------------------------
+CREATE DATABASE `sm_project` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+CREATE TABLE `tb_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `user_name` varchar(30) DEFAULT NULL COMMENT '用户名',
+  `user_birthday` date DEFAULT NULL COMMENT '用户生日',
+  `user_salary` double DEFAULT NULL COMMENT '用户工资',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='用户表';
+
+
+CREATE TABLE `sm_project`.`tb_menu` (
+  `Id` INT NOT NULL,
+  `ParentId` INT NULL,
+  `Name` VARCHAR(50) NOT NULL,
+  `TreeCode` VARCHAR(45) NULL,
+  `Leaf` TINYINT NULL,
+  `Level` INT NULL,
+  `Index` INT NULL,
+  `Desc` VARCHAR(2000) NULL,
+  `IsDeleted` TINYINT NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `ModifiedBy` VARCHAR(45) NULL,
+  `ModifiedDate` DATE NULL,
+  PRIMARY KEY (`Id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='菜单表';;
+
