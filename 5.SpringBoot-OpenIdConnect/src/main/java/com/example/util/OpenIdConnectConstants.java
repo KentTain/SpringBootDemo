@@ -19,5 +19,6 @@ public class OpenIdConnectConstants {
     public final static String ClaimTypes_Email = "email";
     public final static String ClaimTypes_Phone = "phone";
     public final static String ClaimTypes_RoleId = "roleid";
+    public final static String ClaimTypes_RoleName = "rolename";
     public final static String ClaimTypes_DisplayName = "disiplayname";
 }

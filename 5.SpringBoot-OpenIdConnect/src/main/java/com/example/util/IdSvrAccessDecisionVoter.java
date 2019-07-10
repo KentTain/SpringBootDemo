@@ -11,7 +11,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.StringUtils;
 
-public class IdSvrVoter implements AccessDecisionVoter<Object> {
+public class IdSvrAccessDecisionVoter implements AccessDecisionVoter<Object> {
 
 
     @Override public boolean supports(ConfigAttribute attribute) {

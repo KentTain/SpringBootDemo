@@ -18,22 +18,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.util.IdSvrOidcUser;
 
 @RequestMapping("/home")
-@PreAuthorize("hasRole('USER')") //有ROLE_USER权限的用户可以访问
 @Controller
 public class HomeController {
 	@RequestMapping("/index")
     @ResponseBody
     public String home() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
 		IdSvrOidcUser  userDetails = (IdSvrOidcUser) authentication.getPrincipal();
         
-		Collection<? extends GrantedAuthority> users = userDetails.getAuthorities();
+		Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         String username = userDetails.getName();
         
-        StringBuilder sb=new StringBuilder();
-        for(GrantedAuthority user : users)
+        StringBuilder sb = new StringBuilder();
+        for(GrantedAuthority authority : authorities)
         {
-        	sb.append(user.getAuthority() + ", ");
+        	sb.append(authority.getAuthority() + ", ");
         }
         return "Welcome, " + username + ", authorities: " + sb.toString();
     }
@@ -42,6 +42,7 @@ public class HomeController {
     private OAuth2AuthorizedClientService authorizedClientService;
 
     @RequestMapping("/userinfo")
+    @PreAuthorize("hasRole('缓存管理-数据库池管理')") //有ROLE_USER权限的用户可以访问
     @ResponseBody
     public String userinfo(OAuth2AuthenticationToken authentication) {
         // authentication.getAuthorizedClientRegistrationId() returns the

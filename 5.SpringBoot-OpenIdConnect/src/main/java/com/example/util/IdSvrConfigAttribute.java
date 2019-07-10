@@ -2,6 +2,8 @@ package com.example.util;
 
 import org.springframework.security.access.prepost.PreInvocationAttribute;
 
+import com.example.StringExtensions;
+
 public class IdSvrConfigAttribute implements PreInvocationAttribute {
 
 	private final String claimKey;
@@ -32,12 +34,17 @@ public class IdSvrConfigAttribute implements PreInvocationAttribute {
 
 	@Override
 	public String toString() {
-		return getClaimKey() + "-" + getClaimValue();
+		if(!StringExtensions.isNullOrEmpty(claimKey) && !StringExtensions.isNullOrEmpty(claimValue))
+			return claimKey + "-" + claimValue;
+		
+		if(!StringExtensions.isNullOrEmpty(claimKey))
+			return claimKey;
+		
+		return "";
 	}
 
 	@Override
 	public String getAttribute() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.toString();
 	}
 }

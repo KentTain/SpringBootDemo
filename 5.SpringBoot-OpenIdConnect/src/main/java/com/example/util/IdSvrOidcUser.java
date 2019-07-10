@@ -74,6 +74,7 @@ public class IdSvrOidcUser extends DefaultOAuth2User implements OidcUser {
 	private String displayName;
 	private String tenantName;
 	private List<String> roleIds = new ArrayList<String>();
+	private List<String> roleNames = new ArrayList<String>();
 	
 	private final OidcIdToken idToken;
 	private final OidcUserInfo userInfo;
@@ -125,6 +126,13 @@ public class IdSvrOidcUser extends DefaultOAuth2User implements OidcUser {
 	}
 	public void setRoleIds(List<String> roleIds) {
 		this.roleIds = roleIds;
+	}
+	
+	public List<String> getRoleNames() {
+		return this.roleNames;
+	}
+	public void setRoleNames(List<String> roleNames) {
+		this.roleNames = roleNames;
 	}
 	
 	@Override

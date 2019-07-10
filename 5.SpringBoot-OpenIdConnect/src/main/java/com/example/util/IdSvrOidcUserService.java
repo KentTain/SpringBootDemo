@@ -65,7 +65,7 @@ public class IdSvrOidcUserService implements OAuth2UserService<OidcUserRequest, 
 
 		// Set<GrantedAuthority> authorities = Collections.singleton(new
 		// OidcUserAuthority(userRequest.getIdToken(), userInfo));
-		Set<GrantedAuthority> authorities = new HashSet<>(200);
+		Set<GrantedAuthority> authorities = new HashSet<>();
 		// 1) Fetch the authority information from the protected resource using
 		// accessToken
 		// 2) Map the authority information to one or more GrantedAuthority's and add it
@@ -77,6 +77,7 @@ public class IdSvrOidcUserService implements OAuth2UserService<OidcUserRequest, 
 		String userPhone = null;
 		String UserDisplayName = null;
 		List<String> roleIds = new ArrayList<String>();
+		List<String> roleNames = new ArrayList<String>();
 		Map<String, Object> claims = userInfo.getClaims();
 		if (userRequest.getIdToken() != null && userRequest.getIdToken().getClaims().size() > 0)
 		{
@@ -102,14 +103,20 @@ public class IdSvrOidcUserService implements OAuth2UserService<OidcUserRequest, 
 				} else if (claim instanceof List<?>) {
 					roleIds.addAll((List<String>) claim);
 				}
+			} else if (key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleName)) {
+				if (claim instanceof String) {
+					roleNames.add(claim.toString());
+				} else if (claim instanceof List<?>) {
+					roleNames.addAll((List<String>) claim);
+				}
 			} else {
 				if (claim instanceof String) {
-					GrantedAuthority authority = new IdSvrGrantedAuthority(key, claim.toString());
+					GrantedAuthority authority = new IdSvrGrantedAuthority(key, claim.toString(), userRequest.getIdToken(), userInfo);
 					authorities.add(authority);
 				} else if (claim instanceof List<?>) {
 					List<String> claimList = (List<String>) claim;
 					for (String ca : claimList) {
-						GrantedAuthority authority = new IdSvrGrantedAuthority(key, ca);
+						GrantedAuthority authority = new IdSvrGrantedAuthority(key, ca, userRequest.getIdToken(), userInfo);
 						authorities.add(authority);
 					}
 				}
@@ -125,6 +132,7 @@ public class IdSvrOidcUserService implements OAuth2UserService<OidcUserRequest, 
 		user.setTenantName(userTenant);
 		user.setDisplayName(UserDisplayName);
 		user.setRoleIds(roleIds);
+		user.setRoleNames(roleNames);
 		return user;
 	}
 

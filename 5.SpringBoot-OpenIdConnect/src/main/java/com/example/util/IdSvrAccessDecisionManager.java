@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.prepost.PreInvocationAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
@@ -34,17 +35,18 @@ public class IdSvrAccessDecisionManager implements AccessDecisionManager {
         }
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
         // 请求路径
         String url = getUrl(object);
         // http 方法
         String httpMethod = getMethod(object);
 
+        PreInvocationAttribute preAttr = findPreInvocationAttribute(attributes);
+        
         boolean hasPerm = false;
 
         // request请求路径和httpMethod 和权限列表比对。
         for (GrantedAuthority authority : authorities) {
-            if (!(authority instanceof IdSvrGrantedAuthority))
+            if (!IdSvrGrantedAuthority.class.isInstance(authority))
                 continue;
             IdSvrGrantedAuthority urlGrantedAuthority = (IdSvrGrantedAuthority) authority;
             if (StringUtils.isEmpty(urlGrantedAuthority.getAuthority()))
@@ -54,12 +56,11 @@ public class IdSvrAccessDecisionManager implements AccessDecisionManager {
                 urlGrantedAuthority.getClaimKey() :
                 httpMethod;
             //AntPathRequestMatcher进行匹配，url支持ant风格（如：/user/**）
-            AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(),
-                httpMethod2);
-            if (antPathRequestMatcher.matches(((FilterInvocation) object).getRequest())) {
-                hasPerm = true;
-                break;
-            }
+            //AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(), httpMethod2);
+            //if (antPathRequestMatcher.matches(((FilterInvocation) object).getRequest())) {
+            //    hasPerm = true;
+            //    break;
+            //}
         }
 
         if (!hasPerm) {
@@ -67,12 +68,38 @@ public class IdSvrAccessDecisionManager implements AccessDecisionManager {
         }
     }
 
+    private PreInvocationAttribute findPreInvocationAttribute(
+			Collection<ConfigAttribute> config) {
+		for (ConfigAttribute attribute : config) {
+			if (attribute instanceof PreInvocationAttribute) {
+				return (PreInvocationAttribute) attribute;
+			}
+		}
+
+		return null;
+	}
+    
     /**
-     * 获取请求中的url
+     * 获取请求中的url(ControllerName/ActionName)
      */
     private String getUrl(Object o) {
+    	if(!(o instanceof FilterInvocation)) return "";
+    	
         //获取当前访问url
         String url = ((FilterInvocation) o).getRequestUrl();
+        int firstQuestionMarkIndex = url.indexOf("?");
+        if (firstQuestionMarkIndex != -1) {
+            return url.substring(0, firstQuestionMarkIndex);
+        }
+        return url;
+    }
+    /**
+     * 获取请求中的完整url(http://localhost:1003/ControllerName/ActionName)
+     */
+    private String getFullUrl(Object o) {
+    	if(!(o instanceof FilterInvocation)) return "";
+        //获取当前访问url
+        String url = ((FilterInvocation) o).getFullRequestUrl();
         int firstQuestionMarkIndex = url.indexOf("?");
         if (firstQuestionMarkIndex != -1) {
             return url.substring(0, firstQuestionMarkIndex);
