@@ -152,7 +152,13 @@ public class WebSecurityConfig {
 									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_Phone)
 									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_DisplayName)
 									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_TenantName)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleId)) {
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleId)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleName)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_preferred_username)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_given_name)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_sid)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_aud)
+									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_iss)) {
 								if (claim instanceof String) {
 									GrantedAuthority idAuthority = new IdSrvGrantedAuthority(key, claim.toString(),
 											oidcUserAuthority.getIdToken(), userInfo);

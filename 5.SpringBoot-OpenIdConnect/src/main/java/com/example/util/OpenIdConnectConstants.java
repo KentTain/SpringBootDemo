@@ -28,5 +28,7 @@ public class OpenIdConnectConstants {
     public final static String ClaimTypes_aud ="aud";
     public final static String ClaimTypes_iss ="iss";
     
+    public final static String ClaimTypes_UrlPermissions ="urlpermissioms";
+    
     
 }
