@@ -21,4 +21,12 @@ public class OpenIdConnectConstants {
     public final static String ClaimTypes_RoleId = "roleid";
     public final static String ClaimTypes_RoleName = "rolename";
     public final static String ClaimTypes_DisplayName = "disiplayname";
+    
+    public final static String ClaimTypes_preferred_username ="preferred_username";
+    public final static String ClaimTypes_given_name ="given_name";
+    public final static String ClaimTypes_sid ="sid";
+    public final static String ClaimTypes_aud ="aud";
+    public final static String ClaimTypes_iss ="iss";
+    
+    
 }

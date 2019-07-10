@@ -15,23 +15,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.util.IdSvrOidcUser;
+import com.example.util.IdSrvOidcUser;
 
 @RequestMapping("/home")
 @Controller
 public class HomeController {
+	
+	protected Authentication authentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+	
+	protected IdSrvOidcUser userDetails () { 
+		return (IdSrvOidcUser) authentication().getPrincipal(); 
+	}
+	
 	@RequestMapping("/index")
     @ResponseBody
     public String home() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Authentication authentication = authentication();
 		Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
-		IdSvrOidcUser  userDetails = (IdSvrOidcUser) authentication.getPrincipal();
+		IdSrvOidcUser  userDetails = userDetails();
         
 		Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         String username = userDetails.getName();
         
         StringBuilder sb = new StringBuilder();
-        for(GrantedAuthority authority : authorities)
+        for(GrantedAuthority authority : auths)
         {
         	sb.append(authority.getAuthority() + ", ");
         }
@@ -42,18 +51,22 @@ public class HomeController {
     private OAuth2AuthorizedClientService authorizedClientService;
 
     @RequestMapping("/userinfo")
-    @PreAuthorize("hasRole('缓存管理-数据库池管理')") //有ROLE_USER权限的用户可以访问
+    @PreAuthorize("hasAuthority('缓存管理-删除单个缓存')")
     @ResponseBody
-    public String userinfo(OAuth2AuthenticationToken authentication) {
-        // authentication.getAuthorizedClientRegistrationId() returns the
-        // registrationId of the Client that was authorized during the oauth2Login() flow
-        OAuth2AuthorizedClient authorizedClient =
-            this.authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(),
-                authentication.getName());
-
-        OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
-
-        return accessToken.getTokenValue();
+    public String userinfo() {
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
+		IdSrvOidcUser  userDetails = (IdSrvOidcUser) authentication.getPrincipal();
+        
+		Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        String username = userDetails.getName();
+        String accessToken = userDetails.getIdToken().getTokenValue();
+        
+        StringBuilder sb = new StringBuilder();
+        for(GrantedAuthority authority : auths)
+        {
+        	sb.append(authority.getAuthority() + ", ");
+        }
+        return "Welcome, " + username + ", accessToken: " + accessToken + ", authorities: " + sb.toString();
     }
 }

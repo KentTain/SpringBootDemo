@@ -39,11 +39,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
 import com.example.util.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.util.IdSvrAccessDecisionManager;
-import com.example.util.IdSvrAuthenticationSuccessHandler;
-import com.example.util.IdSvrAuthorizationRequestResolver;
-import com.example.util.IdSvrGrantedAuthority;
-import com.example.util.IdSvrOidcUser;
+import com.example.util.IdSrvAccessDecisionManager;
+import com.example.util.IdSrvAccessDecisionVoter;
+import com.example.util.IdSrvAuthenticationSuccessHandler;
+import com.example.util.IdSrvAuthorizationRequestResolver;
+import com.example.util.IdSrvGrantedAuthority;
+import com.example.util.IdSrvOidcUser;
 import com.example.util.OpenIdConnectConstants;
 
 @Configuration
@@ -56,7 +57,7 @@ public class WebSecurityConfig {
 		@Autowired
 		private ClientRegistrationRepository clientRegistrationRepository;
 		@Autowired
-		private IdSvrAuthenticationSuccessHandler successHandler;
+		private IdSrvAuthenticationSuccessHandler successHandler;
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
@@ -69,13 +70,14 @@ public class WebSecurityConfig {
 							// fsi.setSecurityMetadataSource(fsi.getSecurityMetadataSource());
 
 							// 覆盖AccessDecisionManager
-							fsi.setAccessDecisionManager(getAccessDecisionManager());
+							//fsi.setAccessDecisionManager(new IdSvrAccessDecisionManager());
 
 							// 增加投票项
-							// AccessDecisionManager accessDecisionManager = fsi.getAccessDecisionManager();
-							// if (accessDecisionManager instanceof AbstractAccessDecisionManager) {
-							//	((AbstractAccessDecisionManager)accessDecisionManager).getDecisionVoters().add(new IdSvrVoter());
-							// }
+							//AccessDecisionManager accessDecisionManager = fsi.getAccessDecisionManager();
+							//if (accessDecisionManager instanceof AbstractAccessDecisionManager) {
+							//	((AbstractAccessDecisionManager) accessDecisionManager).getDecisionVoters()
+							//			.add(new IdSvrAccessDecisionVoter());
+							//}
 
 							return fsi;
 						}
@@ -85,18 +87,14 @@ public class WebSecurityConfig {
 					.authorizationEndpoint()
 						.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 						// 1. 配置自定义OAuth2AuthorizationRequestResolver
-						.authorizationRequestResolver(new IdSvrAuthorizationRequestResolver(this.clientRegistrationRepository))
+						.authorizationRequestResolver(new IdSrvAuthorizationRequestResolver(this.clientRegistrationRepository))
 						.and()
 					.userInfoEndpoint()
-						.customUserType(IdSvrOidcUser.class, IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4)
+						.customUserType(IdSrvOidcUser.class, OpenIdConnectConstants.ClientAuthScheme)
 						.userAuthoritiesMapper(this.userAuthoritiesMapper())
 						.oidcUserService(this.oidcUserService())
 
 			;
-		}
-
-		private AccessDecisionManager getAccessDecisionManager() {
-			return new IdSvrAccessDecisionManager();
 		}
 
 		private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
@@ -105,17 +103,18 @@ public class WebSecurityConfig {
 			/*
 			 * final OidcUserService delegate = new OidcUserService();
 			 * 
-			 * return (userRequest) -> { // Delegate to the default implementation for
-			 * loading a user OidcUser oidcUser = delegate.loadUser(userRequest);
+			 * return (userRequest) -> { 
+			 * // Delegate to the default implementation for loading a user 
+			 * OidcUser oidcUser = delegate.loadUser(userRequest);
 			 * 
 			 * OAuth2AccessToken accessToken = userRequest.getAccessToken();
 			 * Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 			 * 
 			 * Map<String, Object> claims = oidcUser.getClaims();
 			 * 
-			 * // TODO // 1) Fetch the authority information from the protected resource
-			 * using accessToken // 2) Map the authority information to one or more
-			 * GrantedAuthority's and add it to mappedAuthorities
+			 * // TODO 
+			 * // 1) Fetch the authority information from the protected resource using accessToken 
+			 * // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
 			 * 
 			 * // 3) Create a copy of oidcUser but use the mappedAuthorities instead
 			 * oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(),
@@ -125,7 +124,7 @@ public class WebSecurityConfig {
 			 */
 
 			// 方法二：自定义UserService
-			final com.example.util.IdSvrOidcUserService delegate = new com.example.util.IdSvrOidcUserService();
+			final com.example.util.IdSrvOidcUserService delegate = new com.example.util.IdSrvOidcUserService();
 			return (userRequest) -> {
 				return delegate.loadUser(userRequest);
 			};
@@ -136,13 +135,13 @@ public class WebSecurityConfig {
 				Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
 				authorities.forEach(authority -> {
-					if (IdSvrGrantedAuthority.class.isInstance(authority)) {
-						IdSvrGrantedAuthority oidcUserAuthority = (IdSvrGrantedAuthority) authority;
+					if (IdSrvGrantedAuthority.class.isInstance(authority)) {
+						IdSrvGrantedAuthority oidcUserAuthority = (IdSrvGrantedAuthority) authority;
 						OidcUserInfo userInfo = oidcUserAuthority.getUserInfo();
-						
+
 						Map<String, Object> claims = userInfo.getClaims();
-						if (oidcUserAuthority.getIdToken() != null && oidcUserAuthority.getIdToken().getClaims().size() > 0)
-						{
+						if (oidcUserAuthority.getIdToken() != null
+								&& oidcUserAuthority.getIdToken().getClaims().size() > 0) {
 							claims = oidcUserAuthority.getIdToken().getClaims();
 						}
 						for (String key : claims.keySet()) {
@@ -155,12 +154,14 @@ public class WebSecurityConfig {
 									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_TenantName)
 									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleId)) {
 								if (claim instanceof String) {
-									GrantedAuthority idAuthority = new IdSvrGrantedAuthority(key, claim.toString(), oidcUserAuthority.getIdToken(), userInfo);
+									GrantedAuthority idAuthority = new IdSrvGrantedAuthority(key, claim.toString(),
+											oidcUserAuthority.getIdToken(), userInfo);
 									mappedAuthorities.add(idAuthority);
 								} else if (claim instanceof List<?>) {
 									List<String> claimList = (List<String>) claim;
 									for (String ca : claimList) {
-										GrantedAuthority idAuthority = new IdSvrGrantedAuthority(key, ca, oidcUserAuthority.getIdToken(), userInfo);
+										GrantedAuthority idAuthority = new IdSrvGrantedAuthority(key, ca,
+												oidcUserAuthority.getIdToken(), userInfo);
 										mappedAuthorities.add(idAuthority);
 									}
 								}
@@ -204,9 +205,9 @@ public class WebSecurityConfig {
 
 	private ClientRegistration idsvrClientRegistration() {
 		System.out.println("----WebSecurityConfig idsvrClientRegistration: "
-				+ IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4);
+				+ OpenIdConnectConstants.ClientAuthScheme);
 
-		return ClientRegistration.withRegistrationId(IdSvrAuthorizationRequestResolver.RegistrationId_IdentityServer4)
+		return ClientRegistration.withRegistrationId(OpenIdConnectConstants.ClientAuthScheme)
 				.clientId("Y0RiYQ==").clientName("cDba").clientSecret("MmJmNWIyM2Q5ZjY4OWU5YzFmYWVkZTUwNzY2ZWJkNTg=")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
