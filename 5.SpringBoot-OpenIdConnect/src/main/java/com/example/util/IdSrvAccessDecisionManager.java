@@ -12,8 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+@Service
 public class IdSrvAccessDecisionManager implements AccessDecisionManager {
 	private Logger logger = LoggerFactory.getLogger(IdSrvAccessDecisionManager.class);
 

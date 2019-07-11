@@ -15,21 +15,21 @@ public class TenantContext {
 	private static ThreadLocal<String> currentTenant = new ThreadLocal<>();
 	private static Set<TenantInfo> Tenants = new HashSet<TenantInfo>();
 
-	public static final String DEFAULT_TENANTID_DEVDB = "devdb";
-	public static final String DEFAULT_TENANTID_TEST = "test";
+	public static final String DEFAULT_TENANTID_DEVDB = "cdba";
+	public static final String DEFAULT_TENANTID_TEST = "ctest";
 	public static final String DEFAULT_TENANT_PASSWORD = "P@ssw0rd";
 	public static final String DEFAULT_DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	public static final String DEFAULT_JDBC_URL="jdbc:sqlserver://127.0.0.1;databaseName=sm_project";
 	
 	static {
-		TenantInfo devdbTenant = new TenantInfo();
-		devdbTenant.setId(1);
-		devdbTenant.setTenantId(DEFAULT_TENANTID_DEVDB);
-		devdbTenant.setUrl(DEFAULT_JDBC_URL);
-		devdbTenant.setUsername(DEFAULT_TENANTID_DEVDB);
-		devdbTenant.setPassword(DEFAULT_TENANT_PASSWORD);
-		devdbTenant.setDomain(DEFAULT_TENANTID_DEVDB + ".domain.com");
-		Tenants.add(devdbTenant);
+		TenantInfo Tenant = new TenantInfo();
+		Tenant.setId(1);
+		Tenant.setTenantId(DEFAULT_TENANTID_DEVDB);
+		Tenant.setUrl(DEFAULT_JDBC_URL);
+		Tenant.setUsername(DEFAULT_TENANTID_DEVDB);
+		Tenant.setPassword(DEFAULT_TENANT_PASSWORD);
+		Tenant.setDomain(DEFAULT_TENANTID_DEVDB + ".domain.com");
+		Tenants.add(Tenant);
 
 		TenantInfo testTenant = new TenantInfo();
 		testTenant.setId(2);

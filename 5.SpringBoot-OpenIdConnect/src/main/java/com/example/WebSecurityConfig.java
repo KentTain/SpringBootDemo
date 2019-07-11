@@ -42,9 +42,11 @@ import com.example.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.util.IdSrvAccessDecisionManager;
 import com.example.util.IdSrvAccessDecisionVoter;
 import com.example.util.IdSrvAuthenticationSuccessHandler;
+import com.example.util.IdSrvAuthorizationCodeTokenResponseClient;
 import com.example.util.IdSrvAuthorizationRequestResolver;
 import com.example.util.IdSrvGrantedAuthority;
 import com.example.util.IdSrvOidcUser;
+import com.example.util.IdSrvSecurityInterceptor;
 import com.example.util.OpenIdConnectConstants;
 
 @Configuration
@@ -58,10 +60,14 @@ public class WebSecurityConfig {
 		private ClientRegistrationRepository clientRegistrationRepository;
 		@Autowired
 		private IdSrvAuthenticationSuccessHandler successHandler;
+		@Autowired
+		private IdSrvSecurityInterceptor securityFilter;
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.authorizeRequests().anyRequest().authenticated()
+			http
+				//.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+				.authorizeRequests().anyRequest().authenticated()
 					// 修改授权相关逻辑
 					.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 						public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
@@ -85,9 +91,12 @@ public class WebSecurityConfig {
 					.oauth2Login()
 					// .successHandler(successHandler)
 					.authorizationEndpoint()
-						.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
+						//.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 						// 1. 配置自定义OAuth2AuthorizationRequestResolver
 						.authorizationRequestResolver(new IdSrvAuthorizationRequestResolver(this.clientRegistrationRepository))
+						.and()
+					.tokenEndpoint()
+						.accessTokenResponseClient(new IdSrvAuthorizationCodeTokenResponseClient())
 						.and()
 					.userInfoEndpoint()
 						.customUserType(IdSrvOidcUser.class, OpenIdConnectConstants.ClientAuthScheme)
