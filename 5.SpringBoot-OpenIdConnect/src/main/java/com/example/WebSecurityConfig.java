@@ -12,7 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.vote.AbstractAccessDecisionManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -41,6 +44,8 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import com.example.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.util.IdSrvAccessDecisionManager;
 import com.example.util.IdSrvAccessDecisionVoter;
+import com.example.util.IdSrvAuthenticationFailureHandler;
+import com.example.util.IdSrvAuthenticationProvider;
 import com.example.util.IdSrvAuthenticationSuccessHandler;
 import com.example.util.IdSrvAuthorizationCodeTokenResponseClient;
 import com.example.util.IdSrvAuthorizationRequestResolver;
@@ -61,12 +66,17 @@ public class WebSecurityConfig {
 		@Autowired
 		private IdSrvAuthenticationSuccessHandler successHandler;
 		@Autowired
+		private IdSrvAuthenticationFailureHandler failureHandler;
+		@Autowired
 		private IdSrvSecurityInterceptor securityFilter;
+		@Autowired
+		private IdSrvAuthorizationCodeTokenResponseClient idTokenResponseClient;
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
-				//.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+				.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+				.authenticationProvider(this.authenticationProvider())
 				.authorizeRequests().anyRequest().authenticated()
 					// 修改授权相关逻辑
 					.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -89,14 +99,15 @@ public class WebSecurityConfig {
 						}
 					}).and()
 					.oauth2Login()
-					// .successHandler(successHandler)
+					.successHandler(successHandler)
+					.failureHandler(failureHandler)
 					.authorizationEndpoint()
 						//.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 						// 1. 配置自定义OAuth2AuthorizationRequestResolver
 						.authorizationRequestResolver(new IdSrvAuthorizationRequestResolver(this.clientRegistrationRepository))
 						.and()
 					.tokenEndpoint()
-						.accessTokenResponseClient(new IdSrvAuthorizationCodeTokenResponseClient())
+						.accessTokenResponseClient(this.idTokenResponseClient)
 						.and()
 					.userInfoEndpoint()
 						.customUserType(IdSrvOidcUser.class, OpenIdConnectConstants.ClientAuthScheme)
@@ -106,6 +117,21 @@ public class WebSecurityConfig {
 			;
 		}
 
+		@Autowired
+	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	        auth
+	            .authenticationEventPublisher(authenticationEventPublisher());
+	    }
+
+	    @Bean
+	    public DefaultAuthenticationEventPublisher authenticationEventPublisher() {
+	        return new DefaultAuthenticationEventPublisher();
+	    }
+	    
+	    private AuthenticationProvider authenticationProvider() {
+	    	return new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService());
+	    }
+		
 		private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
 
 			// 方法一：方法内部实现

@@ -10,7 +10,8 @@ import com.example.TenantInfo;
 
 public class TenantContext {
 	private static Logger logger = LoggerFactory.getLogger(TenantContext.class.getName());
-	private static ThreadLocal<TenantInfo> currentTenant = new ThreadLocal<TenantInfo>();
+	//private static ThreadLocal<TenantInfo> currentTenant = new ThreadLocal<TenantInfo>();
+	private static TenantInfo currentTenant = new TenantInfo();
 	private static Set<TenantInfo> Tenants = new HashSet<TenantInfo>();
 
 	public static final String DEFAULT_TENANTID_DEVDB = "cdba";
@@ -46,15 +47,18 @@ public class TenantContext {
 	}
 
 	public static void setCurrentTenant(TenantInfo tenant) {
-		System.out.println("-----Setting tenant to " + tenant);
-		currentTenant.set(tenant);
+		System.out.println("-----Setting tenant to " + tenant.getTenantId());
+		currentTenant = tenant;
+		//currentTenant.set(tenant);
 	}
 
 	public static TenantInfo getCurrentTenant() {
-		return currentTenant.get();
+		return currentTenant;
+		//return currentTenant.get();
 	}
 	public static void clear() {
-		currentTenant.set(null);
+		currentTenant = null;
+		//currentTenant.set(null);
 	}
 
 	public static TenantInfo GetTenantByTenantId(String tenantName) {

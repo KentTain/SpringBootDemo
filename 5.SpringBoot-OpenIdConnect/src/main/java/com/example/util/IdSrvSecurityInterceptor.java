@@ -69,8 +69,8 @@ public class IdSrvSecurityInterceptor extends AbstractSecurityInterceptor implem
 		//设置当前访问对象的租户Id
 		TenantContext.setCurrentTenant(tenant);
 		
-		//FilterInvocation fi = new FilterInvocation(request, response, chain);
-		//invoke(fi);
+		FilterInvocation fi = new FilterInvocation(request, response, chain);
+		invoke(fi);
 	}
 
 	public void invoke(FilterInvocation fi) throws IOException, ServletException {

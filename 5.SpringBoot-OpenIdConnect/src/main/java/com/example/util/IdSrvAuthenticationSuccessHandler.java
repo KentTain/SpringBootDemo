@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -26,31 +27,13 @@ public class IdSrvAuthenticationSuccessHandler  implements AuthenticationSuccess
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest arg0, HttpServletResponse arg1, Authentication authentication)
 			throws IOException, ServletException {
-		
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
-		StringBuilder sbBuilder = new StringBuilder();
-		authorities.forEach(authority -> {
-			sbBuilder.append(authority.getAuthority() + ", ");
-			if(authority.getAuthority().equals("ROLE_USER")) {
-				try {
-					redirectStrategy.sendRedirect(arg0, arg1, "/user");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else if(authority.getAuthority().equals("ROLE_ADMIN")) {
-				try {
-					redirectStrategy.sendRedirect(arg0, arg1, "/admin");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-	            throw new IllegalStateException();
-	        }
-		});
-		System.out.println("----IdSvrAuthenticationSuccessHandler onAuthenticationSuccess: " + sbBuilder.toString());
+		Object  obj = authentication.getPrincipal();
+		if(OidcUser.class.isInstance(obj))
+		{
+			OidcUser user = (OidcUser) obj; 
+			String account = user.getName(); 
+			System.out.println("----IdSvrAuthenticationSuccessHandler onAuthenticationSuccess user: " + account);
+		}
 	}
  
 }

@@ -29,6 +29,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenRespon
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -42,6 +43,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.example.TenantInfo;
 import com.example.Interceptor.TenantContext;
 
+@Component
 public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> {
 	private Logger logger = LoggerFactory.getLogger(IdSrvAuthorizationCodeTokenResponseClient.class);
 	private static final String INVALID_TOKEN_RESPONSE_ERROR_CODE = "invalid_token_response";
