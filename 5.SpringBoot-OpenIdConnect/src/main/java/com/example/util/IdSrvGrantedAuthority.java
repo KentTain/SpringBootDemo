@@ -10,9 +10,13 @@ public class IdSrvGrantedAuthority extends OidcUserAuthority {
     private final String claimValue;
     
     public IdSrvGrantedAuthority(String key, String value, OidcIdToken idToken, OidcUserInfo userInfo) {
-    	super(key + "-" + value, idToken, userInfo);
+    	super(value != null ? key + "-" + value : key, idToken, userInfo);
         this.claimKey = key;
         this.claimValue = value;
+    }
+    
+    public IdSrvGrantedAuthority(String key, OidcIdToken idToken, OidcUserInfo userInfo) {
+    	this(key, null, idToken, userInfo);
     }
 
     public String getClaimKey() {

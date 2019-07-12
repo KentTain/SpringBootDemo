@@ -1,10 +1,13 @@
 package com.example.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.security.core.Authentication;
@@ -17,13 +20,17 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration.ProviderDetails;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
@@ -33,6 +40,9 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoderJwkSupport;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import com.example.Tenant;
+import com.example.Interceptor.TenantContext;
 
 public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthenticationProvider{
 	private static final String INVALID_STATE_PARAMETER_ERROR_CODE = "invalid_state_parameter";
@@ -98,8 +108,13 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
 
-		ClientRegistration clientRegistration = authorizationCodeAuthentication.getClientRegistration();
+		
+		Tenant tenant = TenantContext.getCurrentTenant();
+		if (tenant == null)
+			throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient Invalid Token Client Tenant.");
 
+		ClientRegistration clientRegistration = getClientRegistrationByTenant(authorizationCodeAuthentication.getClientRegistration(), tenant);
+		
 		Map<String, Object> additionalParameters = accessTokenResponse.getAdditionalParameters();
 		if (!additionalParameters.containsKey(OidcParameterNames.ID_TOKEN)) {
 			OAuth2Error invalidIdTokenError = new OAuth2Error(
@@ -125,6 +140,58 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 		authenticationResult.setDetails(authorizationCodeAuthentication.getDetails());
 
 		return authenticationResult;
+	}
+	
+	private ClientRegistration getClientRegistrationByTenant(ClientRegistration clientReg, Tenant tenant)
+	{
+		System.out.println(
+				clientReg.getClientName() + "----updateClientRegistrationByTenant with tenant: " 
+						+ tenant == null
+						? clientReg.getClientName()
+						: tenant.getTenantName());
+
+		if (tenant == null)
+			return clientReg;
+
+		ProviderDetails provider = clientReg.getProviderDetails();
+		if (provider == null)
+			return clientReg;
+
+		String tenantName = Optional.of(tenant.getTenantName()).orElse(clientReg.getClientName());
+		String clientId = Optional.of(tenant.getClientId()).orElse(clientReg.getClientId());
+		String clientSecret = Optional.of(tenant.getClientSecret()).orElse(clientReg.getClientSecret());
+
+		return ClientRegistration.withRegistrationId(OpenIdConnectConstants.ClientAuthScheme).clientId(clientId)
+				.clientName(tenantName).clientSecret(clientSecret)
+				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope(clientReg.getScopes())
+				// .userNameAttributeName("SubjectId")
+				.userNameAttributeName(IdTokenClaimNames.SUB)
+				// .redirectUriTemplate("{baseUrl}/oidc/signin-callback/{registrationId}")
+				.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+				.authorizationUri(replaceHostInUrl(provider.getAuthorizationUri(), tenantName))
+				.tokenUri(replaceHostInUrl(provider.getTokenUri(), tenantName))
+				.userInfoUri(replaceHostInUrl(provider.getUserInfoEndpoint().getUri(), tenantName))
+				.jwkSetUri(replaceHostInUrl(provider.getJwkSetUri(), tenantName)).build();
+
+	}
+	public static String replaceHostInUrl(String originalURL, String tenantName) {
+		try {
+			if(originalURL.contains("?")) {
+				originalURL += "&acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&tenantName=" + tenantName;
+			}
+			else {
+				originalURL += "?acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&tenantName=" + tenantName;
+			}
+
+			URI uri = new URI(originalURL);
+			uri = new URI(uri.getScheme().toLowerCase(), tenantName + "." + uri.getAuthority(), uri.getPath(), uri.getQuery(), uri.getFragment());
+			
+			return uri.toString();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			return null;
+		}
 	}
 	
 	private OidcIdToken createOidcToken(ClientRegistration clientRegistration, OAuth2AccessTokenResponse accessTokenResponse) {
@@ -189,9 +256,9 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 		// The aud (audience) Claim MAY contain an array with more than one element.
 		// The ID Token MUST be rejected if the ID Token does not list the Client as a valid audience,
 		// or if it contains additional audiences not trusted by the Client.
-		//if (!audience.contains(clientRegistration.getClientId())) {
-		//	throwInvalidIdTokenException();
-		//}
+		if (!audience.contains(clientRegistration.getClientId())) {
+			throwInvalidIdTokenException();
+		}
 
 		// 4. If the ID Token contains multiple audiences,
 		// the Client SHOULD verify that an azp Claim is present.

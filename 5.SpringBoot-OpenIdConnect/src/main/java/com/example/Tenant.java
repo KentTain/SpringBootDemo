@@ -2,14 +2,14 @@ package com.example;
 
 //@Entity
 //@Table(name = "tenant_info")
-public class TenantInfo {
+public class Tenant {
 
 	// @Id
 	// @Column(name = "id")
 	private Integer id;
 
 	// @Column(name = "tenant_id")
-	private String tenantId;
+	private String tenantName;
 
 	// @Column(name = "tenant_type")
 	private String tenantType;
@@ -36,11 +36,11 @@ public class TenantInfo {
 		this.id = id;
 	}
 
-	public String getTenantId() {
-		return tenantId;
+	public String getTenantName() {
+		return tenantName;
 	}
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
+	public void setTenantName(String tenantId) {
+		this.tenantName = tenantId;
 	}
 
 	public String getTenantType() {

@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration.ProviderDetails;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
@@ -29,6 +32,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenRespon
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -40,7 +44,7 @@ import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.TenantInfo;
+import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
 
 @Component
@@ -66,7 +70,7 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 			throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient Invalid Token Client Registration with getGrantType: " + authorizationCodeGrantRequest.getGrantType());
 		}
 
-		TenantInfo tenant = TenantContext.getCurrentTenant();
+		Tenant tenant = TenantContext.getCurrentTenant();
 		if (tenant == null)
 			throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient Invalid Token Client Tenant.");
 
@@ -74,7 +78,7 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 
 		ResponseEntity<OAuth2AccessTokenResponse> response;
 
-		System.out.println("----IdSrvAuthorizationCodeTokenResponseClient getTokenResponse tenant: " + tenant.getTenantId()
+		System.out.println("----IdSrvAuthorizationCodeTokenResponseClient getTokenResponse tenant: " + tenant.getTenantName()
 				+ ", requestUrl=" + request.getUrl());
 		
 		try {
@@ -99,13 +103,13 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 
 		return tokenResponse;
 	}
-	
-	private RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest, TenantInfo tenant) {
+
+	private RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest, Tenant tenant) {
 		ClientRegistration clientRegistration = authorizationCodeGrantRequest.getClientRegistration();
 
 		HttpHeaders headers = getTokenRequestHeaders(clientRegistration, tenant);
 		MultiValueMap<String, String> formParameters = this.buildFormParameters(authorizationCodeGrantRequest, tenant);
-		String tokenUrl = replaceHostInUrl(clientRegistration.getProviderDetails().getTokenUri(), tenant.getTenantId());
+		String tokenUrl = replaceHostInUrl(clientRegistration.getProviderDetails().getTokenUri(), tenant.getTenantName());
 		URI uri = UriComponentsBuilder.fromUriString(tokenUrl)
 				.build()
 				.toUri();
@@ -113,7 +117,7 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 		return new RequestEntity<>(formParameters, headers, HttpMethod.POST, uri);
 	}
 	
-	private MultiValueMap<String, String> buildFormParameters(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest, TenantInfo tenant) {
+	private MultiValueMap<String, String> buildFormParameters(OAuth2AuthorizationCodeGrantRequest authorizationCodeGrantRequest, Tenant tenant) {
 		ClientRegistration clientRegistration = authorizationCodeGrantRequest.getClientRegistration();
 		OAuth2AuthorizationExchange authorizationExchange = authorizationCodeGrantRequest.getAuthorizationExchange();
 
@@ -129,7 +133,7 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 		return formParameters;
 	}
 
-	private HttpHeaders getTokenRequestHeaders(ClientRegistration clientRegistration, TenantInfo tenant) {
+	private HttpHeaders getTokenRequestHeaders(ClientRegistration clientRegistration, Tenant tenant) {
 		HttpHeaders headers = new HttpHeaders();
 		HttpHeaders defaultHeader = getDefaultTokenRequestHeaders();
 		headers.addAll(defaultHeader);

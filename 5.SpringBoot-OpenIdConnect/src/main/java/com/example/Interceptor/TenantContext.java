@@ -6,13 +6,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.TenantInfo;
+import com.example.Tenant;
 
 public class TenantContext {
 	private static Logger logger = LoggerFactory.getLogger(TenantContext.class.getName());
 	//private static ThreadLocal<TenantInfo> currentTenant = new ThreadLocal<TenantInfo>();
-	private static TenantInfo currentTenant = new TenantInfo();
-	private static Set<TenantInfo> Tenants = new HashSet<TenantInfo>();
+	private static Tenant currentTenant = new Tenant();
+	private static Set<Tenant> Tenants = new HashSet<Tenant>();
 
 	public static final String DEFAULT_TENANTID_DEVDB = "cdba";
 	public static final String DEFAULT_TENANTID_TEST = "ctest";
@@ -21,9 +21,9 @@ public class TenantContext {
 	public static final String DEFAULT_JDBC_URL="jdbc:sqlserver://127.0.0.1;databaseName=sm_project";
 	
 	static {
-		TenantInfo devdbTenant = new TenantInfo();
+		Tenant devdbTenant = new Tenant();
 		devdbTenant.setId(1);
-		devdbTenant.setTenantId(DEFAULT_TENANTID_DEVDB);
+		devdbTenant.setTenantName(DEFAULT_TENANTID_DEVDB);
 		devdbTenant.setUrl(DEFAULT_JDBC_URL);
 		devdbTenant.setUsername(DEFAULT_TENANTID_DEVDB);
 		devdbTenant.setPassword(DEFAULT_TENANT_PASSWORD);
@@ -33,9 +33,9 @@ public class TenantContext {
 		
 		Tenants.add(devdbTenant);
 
-		TenantInfo testTenant = new TenantInfo();
+		Tenant testTenant = new Tenant();
 		testTenant.setId(2);
-		testTenant.setTenantId(DEFAULT_TENANTID_TEST);
+		testTenant.setTenantName(DEFAULT_TENANTID_TEST);
 		testTenant.setUrl(DEFAULT_JDBC_URL);
 		testTenant.setUsername(DEFAULT_TENANTID_TEST);
 		testTenant.setPassword(DEFAULT_TENANT_PASSWORD);
@@ -46,13 +46,13 @@ public class TenantContext {
 		Tenants.add(testTenant);
 	}
 
-	public static void setCurrentTenant(TenantInfo tenant) {
-		System.out.println("-----Setting tenant to " + tenant.getTenantId());
+	public static void setCurrentTenant(Tenant tenant) {
+		System.out.println("-----Setting tenant to " + tenant.getTenantName());
 		currentTenant = tenant;
 		//currentTenant.set(tenant);
 	}
 
-	public static TenantInfo getCurrentTenant() {
+	public static Tenant getCurrentTenant() {
 		return currentTenant;
 		//return currentTenant.get();
 	}
@@ -61,11 +61,12 @@ public class TenantContext {
 		//currentTenant.set(null);
 	}
 
-	public static TenantInfo GetTenantByTenantId(String tenantName) {
-		return Tenants.stream().filter(t -> tenantName.equalsIgnoreCase(t.getTenantId())).findFirst().get();
+	public static Tenant GetTenantByTenantId(String tenantName) {
+		return Tenants.stream().filter(t -> tenantName.equalsIgnoreCase(t.getTenantName())).findFirst().get();
 	}
 
-	public static TenantInfo GetTenantByDomain(String domain) {
+	public static Tenant GetTenantByDomain(String domain) {
+		System.out.println("-----get tenant by domain: " + domain);
 		return Tenants.stream().filter(t -> domain.equalsIgnoreCase(t.getDomain())).findFirst().get();
 	}
 }

@@ -99,8 +99,8 @@ public class WebSecurityConfig {
 						}
 					}).and()
 					.oauth2Login()
-					.successHandler(successHandler)
-					.failureHandler(failureHandler)
+					//.successHandler(successHandler)
+					//.failureHandler(failureHandler)
 					.authorizationEndpoint()
 						//.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 						// 1. 配置自定义OAuth2AuthorizationRequestResolver
@@ -181,27 +181,15 @@ public class WebSecurityConfig {
 						}
 						for (String key : claims.keySet()) {
 							Object claim = claims.get(key);
-							if (!key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_Id)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_Name)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_Email)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_Phone)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_DisplayName)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_TenantName)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleId)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_RoleName)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_preferred_username)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_given_name)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_sid)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_aud)
-									&& !key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_iss)) {
+							if (key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_AuthorityIds)) {
 								if (claim instanceof String) {
-									GrantedAuthority idAuthority = new IdSrvGrantedAuthority(key, claim.toString(),
+									GrantedAuthority idAuthority = new IdSrvGrantedAuthority(claim.toString(),
 											oidcUserAuthority.getIdToken(), userInfo);
 									mappedAuthorities.add(idAuthority);
 								} else if (claim instanceof List<?>) {
 									List<String> claimList = (List<String>) claim;
 									for (String ca : claimList) {
-										GrantedAuthority idAuthority = new IdSrvGrantedAuthority(key, ca,
+										GrantedAuthority idAuthority = new IdSrvGrantedAuthority(ca,
 												oidcUserAuthority.getIdToken(), userInfo);
 										mappedAuthorities.add(idAuthority);
 									}
@@ -226,7 +214,13 @@ public class WebSecurityConfig {
 						}
 					}
 				});
-
+				
+				StringBuilder sb = new StringBuilder();
+	            for(GrantedAuthority authority : mappedAuthorities)
+	            {
+	            	sb.append(authority.getAuthority() + ", ");
+	            }
+	            System.out.println("----userAuthoritiesMapper mappedAuthorities: " + sb.toString());
 				return mappedAuthorities;
 			};
 		}

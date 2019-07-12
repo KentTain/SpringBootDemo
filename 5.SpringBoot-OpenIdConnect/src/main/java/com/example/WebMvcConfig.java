@@ -83,9 +83,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		InterceptorRegistration registration = registry.addInterceptor(new TenantInterceptor());
+		//InterceptorRegistration registration = registry.addInterceptor(new TenantInterceptor());
 		// 拦截配置l
-		registration.addPathPatterns("/**");
+		//registration.addPathPatterns("/**");
 		// 排除配置
 		//registration.excludePathPatterns("/css");
 

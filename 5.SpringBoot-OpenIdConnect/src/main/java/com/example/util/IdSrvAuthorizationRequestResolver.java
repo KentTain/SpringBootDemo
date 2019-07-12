@@ -22,7 +22,7 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.example.TenantInfo;
+import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
 
 public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
@@ -72,11 +72,11 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		}
 
 		String serverName = request.getServerName();
-		TenantInfo tenant = TenantContext.GetTenantByDomain(serverName);
+		Tenant tenant = TenantContext.GetTenantByDomain(serverName);
 		if (tenant == null)
 			throw new IllegalArgumentException("Invalid Client Tenant with serverName: " + serverName);
 
-		TenantContext.setCurrentTenant(tenant);
+		//TenantContext.setCurrentTenant(tenant);
 		
         OAuth2AuthorizationRequest.Builder builder;
 		if (AuthorizationGrantType.AUTHORIZATION_CODE.equals(clientRegistration.getAuthorizationGrantType())) {
@@ -89,7 +89,7 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 					") for Client Registration with Id: " + clientRegistration.getRegistrationId());
 		}
 
-		String tenantName = tenant.getTenantId();
+		String tenantName = tenant.getTenantName();
 		String redirectUriStr = this.expandRedirectUri(request, clientRegistration, redirectUriAction);
 		String authUriStr = replaceHostInUrl(clientRegistration.getProviderDetails().getAuthorizationUri(), tenantName);
 		System.out.println("----IdSvrAuthorizationRequestResolver resolve tenant: " + tenantName

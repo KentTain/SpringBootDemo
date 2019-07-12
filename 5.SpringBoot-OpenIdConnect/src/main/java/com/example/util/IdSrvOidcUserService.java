@@ -78,6 +78,7 @@ public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, 
 		String UserDisplayName = null;
 		List<String> roleIds = new ArrayList<String>();
 		List<String> roleNames = new ArrayList<String>();
+		List<String> authorityIds = new ArrayList<String>();
 		Map<String, Object> claims = userInfo.getClaims();
 		if (userRequest.getIdToken() != null && userRequest.getIdToken().getClaims().size() > 0)
 		{
@@ -109,19 +110,34 @@ public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, 
 				} else if (claim instanceof List<?>) {
 					roleNames.addAll((List<String>) claim);
 				}
-			} else {
+			} else if (key.equalsIgnoreCase(OpenIdConnectConstants.ClaimTypes_AuthorityIds)) {
 				if (claim instanceof String) {
-					GrantedAuthority authority = new IdSrvGrantedAuthority(key, claim.toString(), userRequest.getIdToken(), userInfo);
-					authorities.add(authority);
+					authorityIds.add(claim.toString());
 				} else if (claim instanceof List<?>) {
-					List<String> claimList = (List<String>) claim;
-					for (String ca : claimList) {
-						GrantedAuthority authority = new IdSrvGrantedAuthority(key, ca, userRequest.getIdToken(), userInfo);
-						authorities.add(authority);
-					}
+					authorityIds.addAll((List<String>) claim);
 				}
-			}
+			} 
+//			else {
+//				if (claim instanceof String) {
+//					GrantedAuthority authority = new IdSrvGrantedAuthority(key, claim.toString(), userRequest.getIdToken(), userInfo);
+//					authorities.add(authority);
+//				} else if (claim instanceof List<?>) {
+//					List<String> claimList = (List<String>) claim;
+//					for (String ca : claimList) {
+//						GrantedAuthority authority = new IdSrvGrantedAuthority(key, ca, userRequest.getIdToken(), userInfo);
+//						authorities.add(authority);
+//					}
+//				}
+//			}
 		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (String ca : authorityIds) {
+			GrantedAuthority authority = new IdSrvGrantedAuthority(ca, userRequest.getIdToken(), userInfo);
+			authorities.add(authority);
+			sb.append(authority.getAuthority() + ", ");
+		}
+		System.out.println("----IdSrvOidcUserService.loadUser authorities: " + sb.toString());
 
 		// 3) Create a copy of oidcUser but use the mappedAuthorities instead
 		IdSrvOidcUser user = new IdSrvOidcUser(authorities, userRequest.getIdToken(), userInfo);
@@ -133,6 +149,7 @@ public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, 
 		user.setDisplayName(UserDisplayName);
 		user.setRoleIds(roleIds);
 		user.setRoleNames(roleNames);
+		user.setAuthorityIds(authorityIds);
 		return user;
 	}
 

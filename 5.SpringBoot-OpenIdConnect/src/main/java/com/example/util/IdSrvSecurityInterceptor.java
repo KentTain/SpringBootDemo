@@ -19,7 +19,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.example.TenantInfo;
+import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
 
 /**
@@ -60,11 +60,11 @@ public class IdSrvSecurityInterceptor extends AbstractSecurityInterceptor implem
 		String serverName = request.getServerName();
 		if (serverName == null)
 			throw new ServletException("未找到主机名");
-		TenantInfo tenant = TenantContext.GetTenantByDomain(serverName);
+		Tenant tenant = TenantContext.GetTenantByDomain(serverName);
 		if (tenant == null)
 			throw new ServletException("未找到相关租户信息");
 		
-		System.out.println(String.format("-----IdSrvSecurityInterceptor setCurrentTenant %s in domain: %s", tenant.getTenantId(),
+		System.out.println(String.format("-----IdSrvSecurityInterceptor setCurrentTenant %s in domain: %s", tenant.getTenantName(),
 				serverName));
 		//设置当前访问对象的租户Id
 		TenantContext.setCurrentTenant(tenant);

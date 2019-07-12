@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.example.TenantInfo;
+import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
 
 /**
@@ -30,12 +30,12 @@ public class TenantInterceptor extends HandlerInterceptorAdapter {
 		if (serverName == null)
 			throw new RuntimeException("未找到主机名");
 		
-		TenantInfo tenant = TenantContext.GetTenantByDomain(serverName);
+		Tenant tenant = TenantContext.GetTenantByDomain(serverName);
 
 		if (tenant == null)
 			throw new RuntimeException("未找到相关租户信息");
 
-		System.out.println(String.format("-----TenantInterceptor setCurrentTenant %s in domain: %s", tenant.getTenantId(),
+		System.out.println(String.format("-----TenantInterceptor setCurrentTenant %s in domain: %s", tenant.getTenantName(),
 				serverName));
 
 		//设置当前访问对象的租户Id
@@ -43,7 +43,7 @@ public class TenantInterceptor extends HandlerInterceptorAdapter {
 		//根据租户数据，设置租户的数据源
 		//TenantDataSourceProvider.addDataSource(tenant);
 		
-		request.getSession().setAttribute("tenantId", tenant.getTenantId());
+		request.getSession().setAttribute("tenantId", tenant.getTenantName());
 		request.getSession().setAttribute("domain", serverName);
 		request.getServletContext().setAttribute("tenantId", tenant);
 		return true;

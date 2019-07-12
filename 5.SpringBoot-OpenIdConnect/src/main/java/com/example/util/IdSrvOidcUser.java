@@ -75,6 +75,7 @@ public class IdSrvOidcUser extends DefaultOAuth2User implements OidcUser {
 	private String tenantName;
 	private List<String> roleIds = new ArrayList<String>();
 	private List<String> roleNames = new ArrayList<String>();
+	private List<String> authorityIds = new ArrayList<String>();
 	
 	private final OidcIdToken idToken;
 	private final OidcUserInfo userInfo;
@@ -135,6 +136,13 @@ public class IdSrvOidcUser extends DefaultOAuth2User implements OidcUser {
 		this.roleNames = roleNames;
 	}
 	
+	public List<String> getAuthorityIds() {
+		return this.authorityIds;
+	}
+	public void setAuthorityIds(List<String> authorityIds) {
+		this.authorityIds = authorityIds;
+	}
+	
 	@Override
 	public OidcIdToken getIdToken() {
 		return this.idToken;
@@ -147,8 +155,7 @@ public class IdSrvOidcUser extends DefaultOAuth2User implements OidcUser {
 
 	@Override
 	public Map<String, Object> getClaims() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getAttributes();
 	}
 	
 	private static Map<String, Object> collectClaims(OidcIdToken idToken, OidcUserInfo userInfo) {

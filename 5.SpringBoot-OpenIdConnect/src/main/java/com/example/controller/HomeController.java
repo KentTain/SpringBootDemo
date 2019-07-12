@@ -26,7 +26,12 @@ public class HomeController {
 	}
 	
 	protected IdSrvOidcUser userDetails () { 
-		return (IdSrvOidcUser) authentication().getPrincipal(); 
+		if(authentication().getPrincipal() instanceof IdSrvOidcUser)
+		{
+			return (IdSrvOidcUser) authentication().getPrincipal(); 
+		}
+		
+		return null;
 	}
 	
 	@RequestMapping("/index")
@@ -35,38 +40,46 @@ public class HomeController {
 		Authentication authentication = authentication();
 		Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
 		IdSrvOidcUser  userDetails = userDetails();
-        
-		Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        String username = userDetails.getName();
-        
-        StringBuilder sb = new StringBuilder();
-        for(GrantedAuthority authority : auths)
+        if (userDetails != null)
         {
-        	sb.append(authority.getAuthority() + ", ");
+        	Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+            String username = userDetails.getName();
+            
+            StringBuilder sb = new StringBuilder();
+            for(GrantedAuthority authority : auths)
+            {
+            	sb.append(authority.getAuthority() + ", ");
+            }
+            return "Welcome, " + username + ", authorities: " + sb.toString();
         }
-        return "Welcome, " + username + ", authorities: " + sb.toString();
+		
+        return "Welcome, " + authentication.getName();
     }
 	
 	@Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
     @RequestMapping("/userinfo")
-    @PreAuthorize("hasAuthority('缓存管理-删除单个缓存')")
+    @PreAuthorize("hasAuthority('126AC4CF-84CF-410B-8989-A4EB8397EC3F')")
     @ResponseBody
     public String userinfo() {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	Collection<? extends GrantedAuthority> auths = authentication.getAuthorities();
 		IdSrvOidcUser  userDetails = (IdSrvOidcUser) authentication.getPrincipal();
-        
-		Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        String username = userDetails.getName();
-        String accessToken = userDetails.getIdToken().getTokenValue();
-        
-        StringBuilder sb = new StringBuilder();
-        for(GrantedAuthority authority : auths)
+		if (userDetails != null)
         {
-        	sb.append(authority.getAuthority() + ", ");
+        	Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+            String username = userDetails.getName();
+            String accessToken = userDetails.getIdToken().getTokenValue();
+            
+            StringBuilder sb = new StringBuilder();
+            for(GrantedAuthority authority : auths)
+            {
+            	sb.append(authority.getAuthority() + ", ");
+            }
+            return "Welcome, " + username + ", accessToken: " + accessToken + ", authorities: " + sb.toString();
         }
-        return "Welcome, " + username + ", accessToken: " + accessToken + ", authorities: " + sb.toString();
+		
+		return "Welcome, " + authentication.getName();
     }
 }
