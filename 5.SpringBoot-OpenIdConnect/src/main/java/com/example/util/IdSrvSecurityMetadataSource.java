@@ -68,7 +68,7 @@ public class IdSrvSecurityMetadataSource implements FilterInvocationSecurityMeta
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		final HttpServletRequest request = ((FilterInvocation) object).getRequest();
 		String requestUrl = request.getRequestURI();
-		System.out.println("-----MySecurityMetadataSource requestUrl is " + requestUrl);
+		System.out.println("-----IdSrvSecurityMetadataSource requestUrl is " + requestUrl);
 		if(resourceMap.size() < 0) {
 			loadResourceDefine();
 		}

@@ -55,7 +55,7 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 	private GrantedAuthoritiesMapper authoritiesMapper = (authorities -> authorities);
 	
 	public IdSrvAuthenticationProvider(
-			OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient,
+			IdSrvAuthorizationCodeTokenResponseClient accessTokenResponseClient,
 			OAuth2UserService<OidcUserRequest, OidcUser> userService) {
 		super(accessTokenResponseClient, userService);
 		this.accessTokenResponseClient = accessTokenResponseClient;
@@ -64,8 +64,7 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		OAuth2LoginAuthenticationToken authorizationCodeAuthentication =
-			(OAuth2LoginAuthenticationToken) authentication;
+		OAuth2LoginAuthenticationToken authorizationCodeAuthentication = (OAuth2LoginAuthenticationToken) authentication;
 
 		// Section 3.1.2.1 Authentication Request - https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
 		// scope
@@ -107,11 +106,10 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 			OAuth2Error oauth2Error = ex.getError();
 			throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
 		}
-
 		
 		Tenant tenant = TenantContext.getCurrentTenant();
 		if (tenant == null)
-			throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient Invalid Token Client Tenant.");
+			throw new IllegalArgumentException("IdSrvAuthenticationProvider throw excepiton: Tenant is null." + authorizationRequest.getRedirectUri());
 
 		ClientRegistration clientRegistration = getClientRegistrationByTenant(authorizationCodeAuthentication.getClientRegistration(), tenant);
 		

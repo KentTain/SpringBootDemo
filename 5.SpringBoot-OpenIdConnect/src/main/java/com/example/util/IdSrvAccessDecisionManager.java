@@ -54,8 +54,8 @@ public class IdSrvAccessDecisionManager implements AccessDecisionManager {
             if (StringUtils.isEmpty(urlGrantedAuthority.getAuthority()))
                 continue;
             //如果method为null，则默认为所有类型都支持
-            String httpMethod2 = (!StringUtils.isEmpty(urlGrantedAuthority.getClaimKey())) ?
-                urlGrantedAuthority.getClaimKey() :
+            String httpMethod2 = (!StringUtils.isEmpty(urlGrantedAuthority.getAuthorityId())) ?
+                urlGrantedAuthority.getAuthorityId() :
                 httpMethod;
             //AntPathRequestMatcher进行匹配，url支持ant风格（如：/user/**）
             //AntPathRequestMatcher antPathRequestMatcher = new AntPathRequestMatcher(urlGrantedAuthority.getAuthority(), httpMethod2);

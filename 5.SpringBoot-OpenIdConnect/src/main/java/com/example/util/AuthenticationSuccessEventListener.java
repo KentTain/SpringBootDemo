@@ -21,7 +21,7 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
 		if (OidcUser.class.isInstance(obj)) {
 			OidcUser user = (OidcUser) obj;
 			String account = user.getName();
-			System.out.println("----IdSvrAuthenticationSuccessHandler onApplicationEvent with user: " + account);
+			System.out.println("----AuthenticationSuccessEventListener onApplicationEvent with user: " + account);
 		}
 
 	}

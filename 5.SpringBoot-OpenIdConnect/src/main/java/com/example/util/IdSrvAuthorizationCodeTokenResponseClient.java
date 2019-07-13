@@ -6,7 +6,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.ServletException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +33,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
+import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
@@ -71,8 +75,20 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 		}
 
 		Tenant tenant = TenantContext.getCurrentTenant();
-		if (tenant == null)
-			throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient Invalid Token Client Tenant.");
+		OAuth2AuthorizationExchange exchange = authorizationCodeGrantRequest.getAuthorizationExchange();
+		if (tenant == null 
+				&& exchange != null
+				&& exchange.getAuthorizationRequest() != null)
+		{
+			OAuth2AuthorizationRequest authorizationRequest = exchange.getAuthorizationRequest();
+			Map<String, Object> parameterMap = authorizationRequest.getAdditionalParameters();
+			String tenantName = (String)parameterMap.get(OpenIdConnectConstants.ClaimTypes_TenantName);
+			tenant = TenantContext.GetTenantByTenantId(tenantName);
+			if (tenant == null)
+				throw new IllegalArgumentException("IdSrvAuthorizationCodeTokenResponseClient throw excepiton: Tenant is null." + authorizationRequest.getRedirectUri());
+			
+			TenantContext.setCurrentTenant(tenant);
+		}
 
 		RequestEntity<?> request = convert(authorizationCodeGrantRequest, tenant);
 
@@ -153,10 +169,10 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 	public static String replaceHostInUrl(String originalURL, String tenantName) {
 		try {
 			if(originalURL.contains("?")) {
-				originalURL += "&acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&tenantName=" + tenantName;
+				originalURL += "&acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&" + OpenIdConnectConstants.ClaimTypes_TenantName + "=" + tenantName;
 			}
 			else {
-				originalURL += "?acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&tenantName=" + tenantName;
+				originalURL += "?acr_values=idp%3A" + OpenIdConnectConstants.ClientAuthScheme + "&acr_values=tenant%3A" + tenantName + "&" + OpenIdConnectConstants.ClaimTypes_TenantName + "=" + tenantName;
 			}
 
 			URI uri = new URI(originalURL);

@@ -28,8 +28,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
-	private Logger logger = LoggerFactory.getLogger(IdSrvOidcUserService.class);
-
 	private static final String INVALID_USER_INFO_RESPONSE_ERROR_CODE = "invalid_user_info_response";
 	private final Set<String> userInfoScopes = new HashSet<>(
 			Arrays.asList(OidcScopes.PROFILE, OidcScopes.EMAIL, OidcScopes.ADDRESS, OidcScopes.PHONE));
@@ -80,7 +78,9 @@ public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, 
 		List<String> roleNames = new ArrayList<String>();
 		List<String> authorityIds = new ArrayList<String>();
 		Map<String, Object> claims = userInfo.getClaims();
-		if (userRequest.getIdToken() != null && userRequest.getIdToken().getClaims().size() > 0)
+		if (userRequest.getIdToken() != null 
+				&& userRequest.getIdToken().getClaims() != null
+				&& userRequest.getIdToken().getClaims().size() > 0)
 		{
 			claims = userRequest.getIdToken().getClaims();
 		}
@@ -137,8 +137,7 @@ public class IdSrvOidcUserService implements OAuth2UserService<OidcUserRequest, 
 			authorities.add(authority);
 			sb.append(authority.getAuthority() + ", ");
 		}
-		System.out.println("----IdSrvOidcUserService.loadUser authorities: " + sb.toString());
-
+		
 		// 3) Create a copy of oidcUser but use the mappedAuthorities instead
 		IdSrvOidcUser user = new IdSrvOidcUser(authorities, userRequest.getIdToken(), userInfo);
 		user.setId(userId);

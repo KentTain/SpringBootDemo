@@ -6,25 +6,16 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 
 public class IdSrvGrantedAuthority extends OidcUserAuthority {
 
-    private final String claimKey;
-    private final String claimValue;
-    
-    public IdSrvGrantedAuthority(String key, String value, OidcIdToken idToken, OidcUserInfo userInfo) {
-    	super(value != null ? key + "-" + value : key, idToken, userInfo);
-        this.claimKey = key;
-        this.claimValue = value;
-    }
-    
-    public IdSrvGrantedAuthority(String key, OidcIdToken idToken, OidcUserInfo userInfo) {
-    	this(key, null, idToken, userInfo);
+	private static final long serialVersionUID = 1L;
+	private final String authorityId;
+
+    public IdSrvGrantedAuthority(String authorityId, OidcIdToken idToken, OidcUserInfo userInfo) {
+    	super(authorityId, idToken, userInfo);
+        this.authorityId = authorityId;
     }
 
-    public String getClaimKey() {
-        return claimKey;
-    }
-
-    public String getClaimValue() {
-        return claimValue;
+    public String getAuthorityId() {
+        return authorityId;
     }
 
     @Override
@@ -38,7 +29,7 @@ public class IdSrvGrantedAuthority extends OidcUserAuthority {
 		}
 
         IdSrvGrantedAuthority target = (IdSrvGrantedAuthority) o;
-        if (claimKey.equals(target.getClaimKey()) && claimValue.equals(target.getClaimValue())) 
+        if (authorityId.equals(target.getAuthorityId())) 
         	return true;
         return false;
     }
@@ -46,8 +37,7 @@ public class IdSrvGrantedAuthority extends OidcUserAuthority {
     @Override
     public int hashCode() {
     	int result = super.hashCode();
-        result = claimKey != null ? claimKey.hashCode() : 0;
-        result = 31 * result + (claimValue != null ? claimValue.hashCode() : 0);
+    	result = 31 * result + authorityId != null ? authorityId.hashCode() : 0;
         return result;
     }
 }

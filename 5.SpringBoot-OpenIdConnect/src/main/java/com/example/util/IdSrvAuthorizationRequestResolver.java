@@ -102,7 +102,7 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		if (registrationId.equalsIgnoreCase(OpenIdConnectConstants.ClientAuthScheme)) {
         	additionalParameters.put("acr_values", "idp%3A" + registrationId);
         	additionalParameters.put("acr_values", "tenant%3A" + tenantName);
-        	additionalParameters.put("tenantName", tenantName);
+        	additionalParameters.put(OpenIdConnectConstants.ClaimTypes_TenantName, tenantName);
         }
         
         OAuth2AuthorizationRequest authorizationRequest = builder

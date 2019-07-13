@@ -10,8 +10,8 @@ import com.example.Tenant;
 
 public class TenantContext {
 	private static Logger logger = LoggerFactory.getLogger(TenantContext.class.getName());
-	//private static ThreadLocal<TenantInfo> currentTenant = new ThreadLocal<TenantInfo>();
-	private static Tenant currentTenant = new Tenant();
+	private static ThreadLocal<Tenant> currentTenant = new ThreadLocal<Tenant>();
+	//private static Tenant currentTenant = new Tenant();
 	private static Set<Tenant> Tenants = new HashSet<Tenant>();
 
 	public static final String DEFAULT_TENANTID_DEVDB = "cdba";
@@ -47,18 +47,18 @@ public class TenantContext {
 	}
 
 	public static void setCurrentTenant(Tenant tenant) {
-		System.out.println("-----Setting tenant to " + tenant.getTenantName());
-		currentTenant = tenant;
-		//currentTenant.set(tenant);
+		//System.out.println("-----Setting tenant to " + tenant.getTenantName());
+		//currentTenant = tenant;
+		currentTenant.set(tenant);
 	}
 
 	public static Tenant getCurrentTenant() {
-		return currentTenant;
-		//return currentTenant.get();
+		//return currentTenant;
+		return currentTenant.get();
 	}
 	public static void clear() {
-		currentTenant = null;
-		//currentTenant.set(null);
+		//currentTenant = null;
+		currentTenant.set(null);
 	}
 
 	public static Tenant GetTenantByTenantId(String tenantName) {
@@ -66,7 +66,7 @@ public class TenantContext {
 	}
 
 	public static Tenant GetTenantByDomain(String domain) {
-		System.out.println("-----get tenant by domain: " + domain);
+		//System.out.println("-----get tenant by domain: " + domain);
 		return Tenants.stream().filter(t -> domain.equalsIgnoreCase(t.getDomain())).findFirst().get();
 	}
 }

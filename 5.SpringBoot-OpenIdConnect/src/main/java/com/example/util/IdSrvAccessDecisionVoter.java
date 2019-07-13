@@ -62,8 +62,8 @@ public class IdSrvAccessDecisionVoter implements AccessDecisionVoter<Object> {
             if (StringUtils.isEmpty(urlGrantedAuthority.getAuthority()))
                 continue;
             //如果method为null，则默认为所有类型都支持
-            String httpMethod2 = (!StringUtils.isEmpty(urlGrantedAuthority.getClaimKey())) ?
-                urlGrantedAuthority.getClaimKey() :
+            String httpMethod2 = (!StringUtils.isEmpty(urlGrantedAuthority.getAuthorityId())) ?
+                urlGrantedAuthority.getAuthorityId() :
                 httpMethod;
         }
 

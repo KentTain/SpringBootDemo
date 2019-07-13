@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.AccessDecisionManager;
-import org.springframework.security.access.vote.AbstractAccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
@@ -21,17 +19,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
+import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
@@ -51,6 +48,7 @@ import com.example.util.IdSrvAuthorizationCodeTokenResponseClient;
 import com.example.util.IdSrvAuthorizationRequestResolver;
 import com.example.util.IdSrvGrantedAuthority;
 import com.example.util.IdSrvOidcUser;
+import com.example.util.IdSrvOidcUserService;
 import com.example.util.IdSrvSecurityInterceptor;
 import com.example.util.OpenIdConnectConstants;
 
@@ -76,7 +74,7 @@ public class WebSecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			http
 				.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
-				.authenticationProvider(this.authenticationProvider())
+				.authenticationProvider(new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService()))
 				.authorizeRequests().anyRequest().authenticated()
 					// 修改授权相关逻辑
 					.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
@@ -117,49 +115,8 @@ public class WebSecurityConfig {
 			;
 		}
 
-		@Autowired
-	    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-	        auth
-	            .authenticationEventPublisher(authenticationEventPublisher());
-	    }
-
-	    @Bean
-	    public DefaultAuthenticationEventPublisher authenticationEventPublisher() {
-	        return new DefaultAuthenticationEventPublisher();
-	    }
-	    
-	    private AuthenticationProvider authenticationProvider() {
-	    	return new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService());
-	    }
-		
 		private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
-
-			// 方法一：方法内部实现
-			/*
-			 * final OidcUserService delegate = new OidcUserService();
-			 * 
-			 * return (userRequest) -> { 
-			 * // Delegate to the default implementation for loading a user 
-			 * OidcUser oidcUser = delegate.loadUser(userRequest);
-			 * 
-			 * OAuth2AccessToken accessToken = userRequest.getAccessToken();
-			 * Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-			 * 
-			 * Map<String, Object> claims = oidcUser.getClaims();
-			 * 
-			 * // TODO 
-			 * // 1) Fetch the authority information from the protected resource using accessToken 
-			 * // 2) Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities
-			 * 
-			 * // 3) Create a copy of oidcUser but use the mappedAuthorities instead
-			 * oidcUser = new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(),
-			 * oidcUser.getUserInfo());
-			 * 
-			 * return oidcUser; };
-			 */
-
-			// 方法二：自定义UserService
-			final com.example.util.IdSrvOidcUserService delegate = new com.example.util.IdSrvOidcUserService();
+			final IdSrvOidcUserService delegate = new IdSrvOidcUserService();
 			return (userRequest) -> {
 				return delegate.loadUser(userRequest);
 			};
@@ -187,6 +144,7 @@ public class WebSecurityConfig {
 											oidcUserAuthority.getIdToken(), userInfo);
 									mappedAuthorities.add(idAuthority);
 								} else if (claim instanceof List<?>) {
+									@SuppressWarnings("unchecked")
 									List<String> claimList = (List<String>) claim;
 									for (String ca : claimList) {
 										GrantedAuthority idAuthority = new IdSrvGrantedAuthority(ca,
@@ -246,7 +204,7 @@ public class WebSecurityConfig {
 				.clientId("Y0RiYQ==").clientName("cDba").clientSecret("MmJmNWIyM2Q5ZjY4OWU5YzFmYWVkZTUwNzY2ZWJkNTg=")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.scope("openid", "profile", "adminapi")
+				.scope(OidcScopes.OPENID, OidcScopes.PROFILE, "adminapi")
 				// .userNameAttributeName("SubjectId")
 				.userNameAttributeName(IdTokenClaimNames.SUB)
 				// .redirectUriTemplate("{baseUrl}/oidc/signin-callback/{registrationId}")
