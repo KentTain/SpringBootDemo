@@ -148,9 +148,6 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 						? clientReg.getClientName()
 						: tenant.getTenantName());
 
-		if (tenant == null)
-			return clientReg;
-
 		ProviderDetails provider = clientReg.getProviderDetails();
 		if (provider == null)
 			return clientReg;

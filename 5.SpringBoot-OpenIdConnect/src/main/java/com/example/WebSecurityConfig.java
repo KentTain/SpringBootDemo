@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -50,6 +47,7 @@ import com.example.util.IdSrvGrantedAuthority;
 import com.example.util.IdSrvOidcUser;
 import com.example.util.IdSrvOidcUserService;
 import com.example.util.IdSrvSecurityInterceptor;
+import com.example.util.IdSrvMethodSecurityInterceptor;
 import com.example.util.OpenIdConnectConstants;
 
 @Configuration
@@ -67,6 +65,8 @@ public class WebSecurityConfig {
 		private IdSrvAuthenticationFailureHandler failureHandler;
 		@Autowired
 		private IdSrvSecurityInterceptor securityFilter;
+		//@Autowired
+		//private IdSrvMethodSecurityInterceptor securityMethodFilter;
 		@Autowired
 		private IdSrvAuthorizationCodeTokenResponseClient idTokenResponseClient;
 
@@ -74,6 +74,7 @@ public class WebSecurityConfig {
 		protected void configure(HttpSecurity http) throws Exception {
 			http
 				.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+				//.addFilterBefore(securityMethodFilter, FilterSecurityInterceptor.class)
 				.authenticationProvider(new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService()))
 				.authorizeRequests().anyRequest().authenticated()
 					// 修改授权相关逻辑
@@ -197,7 +198,7 @@ public class WebSecurityConfig {
 	}
 
 	private ClientRegistration idsvrClientRegistration() {
-		System.out.println("----WebSecurityConfig idsvrClientRegistration: "
+		logger.debug("----WebSecurityConfig idsvrClientRegistration: "
 				+ OpenIdConnectConstants.ClientAuthScheme);
 
 		return ClientRegistration.withRegistrationId(OpenIdConnectConstants.ClientAuthScheme)

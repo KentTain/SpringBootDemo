@@ -92,11 +92,10 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 
 		RequestEntity<?> request = convert(authorizationCodeGrantRequest, tenant);
 
-		ResponseEntity<OAuth2AccessTokenResponse> response;
-
-		System.out.println("----IdSrvAuthorizationCodeTokenResponseClient getTokenResponse tenant: " + tenant.getTenantName()
+		logger.debug("----IdSrvAuthorizationCodeTokenResponseClient getTokenResponse tenant: " + tenant.getTenantName()
 				+ ", requestUrl=" + request.getUrl());
 		
+		ResponseEntity<OAuth2AccessTokenResponse> response;
 		try {
 			response = this.restOperations.exchange(request, OAuth2AccessTokenResponse.class);
 		} catch (RestClientException ex) {

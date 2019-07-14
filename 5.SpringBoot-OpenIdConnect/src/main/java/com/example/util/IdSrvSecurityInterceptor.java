@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -14,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
