@@ -1,12 +1,9 @@
 package com.example.model;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -33,45 +30,78 @@ public class SysSequence extends EntityBase implements java.io.Serializable {
 	@Id
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "SequencName", unique = true, nullable = false)
-	public String SequencName;
+	private String sequencName;
 	/**
 	 * 当前值
 	 */
 	@Column(name = "CurrentValue")
-	public int CurrentValue;
+	private int currentValue;
 	/**
 	 * 初试值
 	 */
 	@Column(name = "InitValue")
-	public int InitValue;
+	private int initValue;
 	/**
 	 * 最大值
 	 */
 	@Column(name = "MaxValue")
-	public int MaxValue;
+	private int maxValue;
 	/**
 	 * 步长
 	 */
 	@Column(name = "StepValue")
-	public int StepValue;
+	private int stepValue;
 	/**
 	 * 前缀
 	 */
 	@Column(name = "PreFixString", length = 12)
-	public String PreFixString;
+	private String preFixString;
 	/**
 	 * 后缀
 	 */
 	@Column(name = "PostFixString", length = 12)
-	public String PostFixString;
+	private String postFixString;
 	/**
 	 * 描述
 	 */
 	@Column(name = "Comments", length = 256)
-	public String Comments;
+	private String comments;
 	/**
 	 * 当前时间
 	 */
 	@Column(name = "CurrDate")
-	public String CurrDate;
+	private String currDate;
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || o.getClass() != this.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+
+		SysSequence node = (SysSequence) o;
+
+		if (sequencName != null ? !sequencName.equals(node.sequencName) : node.sequencName != null)
+			return false;
+		if (preFixString != null ? !preFixString.equals(node.preFixString) : node.preFixString != null)
+			return false;
+		if (postFixString != null ? !postFixString.equals(node.postFixString) : node.postFixString != null)
+			return false;
+		if (currentValue != node.currentValue)
+			return false;
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + currentValue;
+		result = 31 * result + (sequencName != null ? sequencName.hashCode() : 0 );
+		result = 31 * result + (preFixString != null ? preFixString.hashCode() : 0 );
+		result = 31 * result + (postFixString != null ? postFixString.hashCode() : 0 );
+		return result;
+	}
 }

@@ -45,8 +45,8 @@ public class SysSequenceRepositoryTest {
 		TenantContext.setCurrentTenant(devdbTenant.getUsername());
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 
-		SysSequence newUser = SysSequence.builder().SequencName("TestSeq").InitValue(1).MaxValue(10000).CurrentValue(1)
-				.StepValue(1).CurrDate("2019-01-01").PreFixString("CRU").Comments("Test").build();
+		SysSequence newUser = SysSequence.builder().sequencName("TestSeq").initValue(1).maxValue(10000).currentValue(1)
+				.stepValue(1).currDate("2019-01-01").preFixString("CRU").postFixString("End").comments("Test").build();
 		SysSequence dbUser = sysSequenceRepository.saveAndFlush(newUser);
 		Assert.assertEquals(true, dbUser != null);
 		Assert.assertEquals(newUser.getSequencName(), dbUser.getSequencName());
@@ -55,6 +55,7 @@ public class SysSequenceRepositoryTest {
 		Assert.assertEquals(true, isExists);
 		
 		SysSequence user = sysSequenceRepository.findByPreFixString("CRU");
+		SysSequence user2 = sysSequenceRepository.findByPreFixString("End");
 
 		sysSequenceRepository.delete(dbUser);
 	}
