@@ -28,7 +28,7 @@ public class TenantContext {
 		Tenant.setUrl(DEFAULT_JDBC_URL);
 		Tenant.setUsername(DEFAULT_TENANTID_DEVDB);
 		Tenant.setPassword(DEFAULT_TENANT_PASSWORD);
-		Tenant.setDomain(DEFAULT_TENANTID_DEVDB + ".domain.com");
+		Tenant.setDomain(DEFAULT_TENANTID_DEVDB + ".localhost");
 		Tenants.add(Tenant);
 
 		TenantInfo testTenant = new TenantInfo();
@@ -37,7 +37,7 @@ public class TenantContext {
 		testTenant.setUrl(DEFAULT_JDBC_URL);
 		testTenant.setUsername(DEFAULT_TENANTID_TEST);
 		testTenant.setPassword(DEFAULT_TENANT_PASSWORD);
-		testTenant.setDomain(DEFAULT_TENANTID_TEST + ".domain.com");
+		testTenant.setDomain(DEFAULT_TENANTID_TEST + ".localhost");
 		Tenants.add(testTenant);
 	}
 

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.model.TenantInfo;
@@ -20,6 +21,7 @@ import com.example.multitenancy.TenantDataSourceProvider;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+//@EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
 public class UserRepositoryTest {
 	private TenantInfo testTenant;
 	private TenantInfo devdbTenant;

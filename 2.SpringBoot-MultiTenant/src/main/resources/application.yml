@@ -1,8 +1,27 @@
+#  https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 server:
   port: 9082
 spring:
   application:
     name: Bootstrap Spring Boot
+  jpa:
+    show-sql: true
+    hibernate:
+      naming:
+          #implicit-strategy: com.example.CustomNamingStrategy
+          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        format_sql: true
+        hbm2ddl:
+          auto: update
+        multiTenancy: SCHEMA
+        multi_tenant_connection_provider: com.example.multitenancy.MsSqlMultiTenantConnectionProviderImpl
+        tenant_identifier_resolver: com.example.multitenancy.MultiTenantIdentifierResolver
+        globally_quoted_identifiers: true
+        enable_lazy_load_no_trans: true
   datasource:
     tomcat:
       initial-size: 20
@@ -18,22 +37,6 @@ spring:
     restart:
       enabled: true
       exclude: WEB-INF/**
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.SQLServer2012Dialect
-        format_sql: true
-        hbm2ddl:
-          auto: update
-        multiTenancy: SCHEMA
-        multi_tenant_connection_provider: com.example.multitenancy.MsSqlMultiTenantConnectionProviderImpl
-        tenant_identifier_resolver: com.example.multitenancy.MultiTenantIdentifierResolver
-        globally_quoted_identifiers: true
-        enable_lazy_load_no_trans: true
-        naming:
-          implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    show-sql: true
   output:
     ansi:
       enabled: DETECT

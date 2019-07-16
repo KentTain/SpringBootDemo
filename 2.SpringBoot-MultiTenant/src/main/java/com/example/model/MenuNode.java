@@ -3,7 +3,6 @@ package com.example.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
@@ -19,7 +18,7 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@javax.persistence.Entity
 @Table(name="tb_menu")
 @Inheritance(strategy=InheritanceType.JOINED)
 public class MenuNode extends TreeNode<MenuNode> implements Serializable{
