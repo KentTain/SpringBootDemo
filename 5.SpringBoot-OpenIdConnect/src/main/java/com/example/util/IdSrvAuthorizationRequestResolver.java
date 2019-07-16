@@ -30,7 +30,6 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 	
 	private static final String REGISTRATION_ID_URI_VARIABLE_NAME = "registrationId";
 	private static final String DEFAULT_AUTHORIZATION_REQUEST_BASE_URI = "/oauth2/authorization";
-	private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
 	private final ClientRegistrationRepository clientRegistrationRepository;
 	private final AntPathRequestMatcher authorizationRequestMatcher;
 	private final StringKeyGenerator stateGenerator = new Base64StringKeyGenerator(Base64.getUrlEncoder());
@@ -40,9 +39,6 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		this.clientRegistrationRepository = clientRegistrationRepository;
     	this.authorizationRequestMatcher = new AntPathRequestMatcher(
     			DEFAULT_AUTHORIZATION_REQUEST_BASE_URI + "/{" + REGISTRATION_ID_URI_VARIABLE_NAME + "}");
-    	this.defaultAuthorizationRequestResolver =
-                new DefaultOAuth2AuthorizationRequestResolver(
-                        clientRegistrationRepository, "/oauth2/authorization");
     }
 
     @Override
@@ -76,8 +72,6 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		if (tenant == null)
 			throw new IllegalArgumentException("Invalid Client Tenant with serverName: " + serverName);
 
-		//TenantContext.setCurrentTenant(tenant);
-		
         OAuth2AuthorizationRequest.Builder builder;
 		if (AuthorizationGrantType.AUTHORIZATION_CODE.equals(clientRegistration.getAuthorizationGrantType())) {
 			builder = OAuth2AuthorizationRequest.authorizationCode();

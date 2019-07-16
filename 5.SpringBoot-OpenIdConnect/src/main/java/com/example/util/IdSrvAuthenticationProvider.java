@@ -142,8 +142,7 @@ public class IdSrvAuthenticationProvider extends OidcAuthorizationCodeAuthentica
 	
 	private ClientRegistration getClientRegistrationByTenant(ClientRegistration clientReg, Tenant tenant)
 	{
-		System.out.println(
-				clientReg.getClientName() + "----updateClientRegistrationByTenant with tenant: " 
+		System.out.println(clientReg.getClientName() + "----updateClientRegistrationByTenant with tenant: " 
 						+ tenant == null
 						? clientReg.getClientName()
 						: tenant.getTenantName());
