@@ -2,9 +2,9 @@ package com.example.repository;
 
 import java.util.Date;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -23,12 +23,12 @@ import com.example.multitenancy.TenantDataSourceProvider;
 @SpringBootTest
 //@EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
 public class UserRepositoryTest {
-	private TenantInfo testTenant;
-	private TenantInfo devdbTenant;
+	private static TenantInfo testTenant;
+	private static TenantInfo devdbTenant;
 	private Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class.getName());
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		devdbTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_DEVDB);
 		testTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_TEST);
 
@@ -36,8 +36,8 @@ public class UserRepositoryTest {
 		TenantDataSourceProvider.addDataSource(testTenant);
 	}
 
-	@After
-	public void setDown() throws Exception {
+	@AfterClass
+	public static void setDown() throws Exception {
 		TenantDataSourceProvider.clearDataSource();
 	}
 
