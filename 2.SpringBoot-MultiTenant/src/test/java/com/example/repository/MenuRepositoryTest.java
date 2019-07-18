@@ -25,12 +25,12 @@ import com.example.multitenancy.TenantDataSourceProvider;
 @SpringBootTest
 @EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
 public class MenuRepositoryTest {
+	private Logger logger = LoggerFactory.getLogger(MenuRepositoryTest.class.getName());
 	private static TenantInfo testTenant;
 	private static TenantInfo devdbTenant;
-	private Logger logger = LoggerFactory.getLogger(MenuRepositoryTest.class.getName());
-
+	
 	@BeforeClass
-	public static void setUp() throws Exception {
+	public static void setUpBeforeClass() throws Exception {
 		devdbTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_DEVDB);
 		testTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_TEST);
 
@@ -39,7 +39,7 @@ public class MenuRepositoryTest {
 	}
 
 	@AfterClass
-	public static void setDown() throws Exception {
+	public static void setDownAfterClass() throws Exception {
 		TenantDataSourceProvider.clearDataSource();
 	}
 

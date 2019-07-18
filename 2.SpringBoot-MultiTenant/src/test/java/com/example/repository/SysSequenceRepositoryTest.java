@@ -8,7 +8,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.model.SysSequence;
@@ -16,15 +18,16 @@ import com.example.model.TenantInfo;
 import com.example.multitenancy.TenantContext;
 import com.example.multitenancy.TenantDataSourceProvider;
 
+@DataJpaTest
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@Sql(scripts = "/sequence-data.sql")
 public class SysSequenceRepositoryTest {
 	private Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class.getName());
 	private static TenantInfo testTenant;
 	private static TenantInfo devdbTenant;
 
 	@BeforeClass
-	public static void setUp() throws Exception {
+	public static void setUpBeforeClass() throws Exception {
 		devdbTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_DEVDB);
 		testTenant = TenantContext.GetTenantByTenantId(TenantContext.DEFAULT_TENANTID_TEST);
 
@@ -33,7 +36,7 @@ public class SysSequenceRepositoryTest {
 	}
 
 	@AfterClass
-	public static void setDown() throws Exception {
+	public static void setDownAfterClass() throws Exception {
 		TenantDataSourceProvider.clearDataSource();
 	}
 

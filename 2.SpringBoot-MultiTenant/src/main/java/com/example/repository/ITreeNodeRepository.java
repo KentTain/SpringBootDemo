@@ -58,6 +58,7 @@ public interface ITreeNodeRepository<T extends TreeNode<T>, ID extends Serializa
 	 *    根据树结构的TreeCode，获取包含其父节点（包含父节点上的父节点）及其子节点（子节点的子节点）<br/>
 	 *		使用Lazyloading的四种方法: <br/>
 	 *		https://thoughts-on-java.org/5-ways-to-initialize-lazy-relations-and-when-to-use-them/
+	 *		https://www.baeldung.com/spring-data-jpa-named-entity-graphs
 	 *@param clazz 泛型T的Class类型
 	 *@param name 树结构的Name
 	 *@return T 返回结果，形如：	<br/>

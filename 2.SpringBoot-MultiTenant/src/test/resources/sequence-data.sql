@@ -1,0 +1,23 @@
+
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'APInvoice', 1, 1, 999999999, 1, N'APR', NULL, N'cDba-应付发票单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'ARInvoice', 1, 1, 999999999, 1, N'ARR', NULL, N'cDba-应收发票单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'BusinessType', 1, 1, 999999999, 1, N'BUT', NULL, N'cDba-业务类型ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Config', 1, 1, 999999999, 1, N'CFG', NULL, N'cDba-配置ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Customer', 1, 1, 999999999, 1, N'CUR', NULL, N'cDba-客户ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'DeliveryNote', 1, 1, 999999999, 1, N'DNR', NULL, N'cDba-发货单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'FinancingDemand', 1, 1, 999999999, 1, N'FDO', NULL, N'cDba-融资申请ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'GoodsReceipt', 1, 1, 999999999, 1, N'GRR', NULL, N'cDba-入库单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Member', 1, 1, 999999999, 1, N'USR', NULL, N'cDba-用户ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'MessageTemplate', 1, 1, 999999999, 1, N'MGT', NULL, N'cDba-消息模板ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Offering', 1, 1, 999999999, 1, N'OFR', NULL, N'cDba-商品ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'OfferingProvider', 1, 1, 999999999, 1, N'OPS', NULL, N'cDba-商品模板ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'OrderInquire', 1, 1, 999999999, 1, N'OIO', NULL, N'cDba-询盘/报盘ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'OrderOffering', 1, 1, 999999999, 1, N'OOR', NULL, N'cDba-订单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'OrderPurchase', 1, 1, 999999999, 1, N'OPO', NULL, N'cDba-采购需求ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Organization', 1, 1, 999999999, 1, N'ORG', NULL, N'cDba-组织ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'PurchaseOrder', 1, 1, 999999999, 1, N'POR', NULL, N'cDba-采购订单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'SalesOrder', 1, 1, 999999999, 1, N'SOR', NULL, N'cDba-销售订单ID', N'2018-12-01')
+INSERT [cDba].[cfg_SysSequence] ([SequencName], [CurrentValue], [InitValue], [MaxValue], [StepValue], [PreFixString], [PostFixString], [Comments], [CurrDate]) VALUES (N'Supplier', 1, 1, 999999999, 1, N'SUP', NULL, N'cDba-供应商ID', N'2018-12-01')
+
+
+
