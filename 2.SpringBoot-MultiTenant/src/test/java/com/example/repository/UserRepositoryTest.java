@@ -21,7 +21,6 @@ import com.example.multitenancy.TenantDataSourceProvider;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
 public class UserRepositoryTest {
 	private static TenantInfo testTenant;
 	private static TenantInfo devdbTenant;

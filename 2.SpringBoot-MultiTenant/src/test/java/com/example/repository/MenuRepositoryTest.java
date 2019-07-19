@@ -23,7 +23,7 @@ import com.example.multitenancy.TenantDataSourceProvider;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
+//@EnableJpaRepositories(repositoryFactoryBeanClass = TreeNodeRepositoryFactoryBean.class)
 public class MenuRepositoryTest {
 	private Logger logger = LoggerFactory.getLogger(MenuRepositoryTest.class.getName());
 	private static TenantInfo testTenant;

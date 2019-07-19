@@ -2,10 +2,11 @@ package com.example.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.example.model.ConfigAttribute;
 
-
+@Repository
 public interface IConfigAttributeRepository extends JpaRepository<ConfigAttribute, Integer>{
 
 	ConfigAttribute findByName(String name);

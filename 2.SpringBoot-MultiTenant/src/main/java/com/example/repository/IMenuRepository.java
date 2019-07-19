@@ -6,11 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.model.MenuNode;
 import com.example.model.User;
 
+@Repository
 public interface IMenuRepository extends ITreeNodeRepository<MenuNode, Integer> {
 	@Transactional(timeout = 10)
 	@Query(value = "select top 1 * from tb_menu u WITH (ROWLOCK) where u.Name = :name", nativeQuery = true)
