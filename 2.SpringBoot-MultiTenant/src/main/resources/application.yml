@@ -4,6 +4,17 @@ server:
 spring:
   application:
     name: Bootstrap Spring Boot
+  datasource:
+    tomcat:
+      initial-size: 20
+      max-active: 300
+      max-wait: 10000
+      test-on-borrow: true
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://127.0.0.1;databaseName=sm_project;
+    username: sa
+    password: P@ssw0rd
   jpa:
     show-sql: true
     hibernate:
@@ -22,17 +33,6 @@ spring:
         tenant_identifier_resolver: com.example.multitenancy.MultiTenantIdentifierResolver
         globally_quoted_identifiers: true
         enable_lazy_load_no_trans: true
-  datasource:
-    tomcat:
-      initial-size: 20
-      max-active: 300
-      max-wait: 10000
-      test-on-borrow: true
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://127.0.0.1;databaseName=sm_project;
-    username: sa
-    password: P@ssw0rd
   devtools:
     restart:
       enabled: true

@@ -9,7 +9,8 @@ import com.example.model.ConfigEntity;
 @Repository
 public interface IConfigEntityRepository extends JpaRepository<ConfigEntity, Integer>{
 	
-	@EntityGraph(value = "Graph.ConfigEntity.ConfigAttributes")
+	@EntityGraph(attributePaths = {"configAttributes"})
+	//@EntityGraph(value = "Graph.ConfigEntity.ConfigAttributes")
 	ConfigEntity findByConfigName(String configName);
 	
 }
