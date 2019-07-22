@@ -1,7 +1,5 @@
 package com.example.lock;
 
-import static org.junit.Assert.*;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;

@@ -228,7 +228,7 @@ public class MySqlDistributedLock extends DistributedLockAbstract<Boolean> {
 				return false;
 			}
 
-			int i = statement.executeUpdate(cmdText);
+			statement.executeUpdate(cmdText);
 			return true;
 		} catch (Exception ex) {
 			Logger.getLogger(MySqlDistributedLock.class.getName()).log(Level.SEVERE, null, ex);

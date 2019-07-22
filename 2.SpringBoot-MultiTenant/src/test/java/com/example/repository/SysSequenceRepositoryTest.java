@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -40,9 +38,6 @@ public class SysSequenceRepositoryTest {
 	public static void setDownAfterClass() throws Exception {
 		TenantDataSourceProvider.clearDataSource();
 	}
-
-	@Autowired
-	private ISysSequenceRepository sysSequenceRepository;
 
 	@Test
 	public void test_sysSequence_devdb_crud() {

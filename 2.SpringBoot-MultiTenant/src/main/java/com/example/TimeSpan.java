@@ -5,28 +5,13 @@ package com.example;
  */
 public class TimeSpan implements Comparable<TimeSpan> {
 	public final static long TicksPerMillisecond = 10000;
-	private final static double MillisecondsPerTick = 1.0 / TicksPerMillisecond;
-
 	public final static long TicksPerSecond = TicksPerMillisecond * 1000; // 10,000,000
-	private final static double SecondsPerTick = 1.0 / TicksPerSecond; // 0.0001
-
 	public final static long TicksPerMinute = TicksPerSecond * 60; // 600,000,000
-	private final static double MinutesPerTick = 1.0 / TicksPerMinute; // 1.6666666666667e-9
-
 	public final static long TicksPerHour = TicksPerMinute * 60; // 36,000,000,000
-	private final static double HoursPerTick = 1.0 / TicksPerHour; // 2.77777777777777778e-11
-
 	public final static long TicksPerDay = TicksPerHour * 24; // 864,000,000,000
-	private final static double DaysPerTick = 1.0 / TicksPerDay; // 1.1574074074074074074e-12
-
 	private final static int MillisPerSecond = 1000;
 	private final static int MillisPerMinute = MillisPerSecond * 60; // 60,000
 	private final static int MillisPerHour = MillisPerMinute * 60; // 3,600,000
-	private final static int MillisPerDay = MillisPerHour * 24; // 86,400,000
-
-	private final static long MaxSeconds = Long.MAX_VALUE / TicksPerSecond;
-	private final static long MinSeconds = Long.MIN_VALUE / TicksPerSecond;
-
 	private final static long MaxMilliSeconds = Long.MAX_VALUE / TicksPerMillisecond;
 	private final static long MinMilliSeconds = Long.MIN_VALUE / TicksPerMillisecond;
 

@@ -1,10 +1,7 @@
 package com.example.dto;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-
-import com.example.model.SysSequence;
 
 
 @Mapper

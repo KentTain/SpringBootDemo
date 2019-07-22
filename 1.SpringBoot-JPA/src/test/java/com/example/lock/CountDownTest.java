@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 public class CountDownTest {
 	private Logger logger = LoggerFactory.getLogger(DatabaseDistributedLockTest.class);
 	
-	private static Integer count = 1000;
 	private CountDownLatch countDownLatch;
 	private ExecutorService service;
 	

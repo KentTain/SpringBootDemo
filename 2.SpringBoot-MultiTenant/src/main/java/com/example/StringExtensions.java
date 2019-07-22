@@ -456,7 +456,6 @@ public final class StringExtensions {
 				"([\\r\\n])[\\s]+", "&(quot|#34);", "&(amp|#38);", "&(lt|#60);", "&(gt|#62);", "&(nbsp|#160);",
 				"&(iexcl|#161);", "&(cent|#162);", "&(pound|#163);", "&(copy|#169);", "&#(\\d+);", "-->", "<!--.*\\n" };
 
-		String newReg = aryReg[0];
 		String strOutput = strHtml;
 		for (int i = 0; i < aryReg.length; i++) {
 			// Regex regex = new Regex(aryReg[i], RegexOptions.IgnoreCase);

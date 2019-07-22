@@ -34,7 +34,7 @@ public class SqlServerDistributedLock extends DistributedLockAbstract<Boolean> {
 	public void DoDistributedLock(String key, TimeSpan acquireTimeout, TimeSpan lockTimeOut, Consumer<Boolean> action) {
 		// TODO Auto-generated method stub
 		key = DistributedLockPro + key;
-		String value = java.util.UUID.randomUUID().toString();
+		java.util.UUID.randomUUID().toString();
 		String connectionString = GlobalConfig.DatabaseConnectionString;
 
 		Connection connection = getConnection(connectionString);
