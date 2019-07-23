@@ -19,7 +19,7 @@ import com.example.multitenancy.TenantDataSourceProvider;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
-@Sql(scripts = "/sequence-data.sql")
+//@Sql(scripts = "/sequence-data.sql")
 public class SysSequenceRepositoryTest {
 	private Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class.getName());
 	private static TenantInfo testTenant;
@@ -39,16 +39,19 @@ public class SysSequenceRepositoryTest {
 		TenantDataSourceProvider.clearDataSource();
 	}
 
+	@Autowired
+	private ISysSequenceRepository sysSequenceRepository;
+	
 	@Test
 	public void test_sysSequence_devdb_crud() {
 		TenantContext.setCurrentTenant(devdbTenant.getUsername());
 		logger.info(String.format("-----Tenant: %s test----", TenantContext.getCurrentTenant()));
 
-		SysSequence newUser = SysSequence.builder().sequencName("TestSeq").initValue(1).maxValue(10000).currentValue(1)
+		SysSequence newUser = SysSequence.builder().sequenceName("TestSeq").initValue(1).maxValue(10000).currentValue(1)
 				.stepValue(1).currDate("2019-01-01").preFixString("CRU").postFixString("End").comments("Test").build();
 		SysSequence dbUser = sysSequenceRepository.saveAndFlush(newUser);
 		Assert.assertEquals(true, dbUser != null);
-		Assert.assertEquals(newUser.getSequencName(), dbUser.getSequencName());
+		Assert.assertEquals(newUser.getSequenceName(), dbUser.getSequenceName());
 
 		boolean isExists = sysSequenceRepository.existsById("TestSeq");
 		Assert.assertEquals(true, isExists);

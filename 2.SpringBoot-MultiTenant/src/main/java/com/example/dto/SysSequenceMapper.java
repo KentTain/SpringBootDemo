@@ -8,9 +8,9 @@ import org.mapstruct.factory.Mappers;
 public interface SysSequenceMapper {
 	SysSequenceMapper INSTANCE = Mappers.getMapper(SysSequenceMapper.class);
 
-	//@Mapping( source = "sequencName", target = "sequencName" )
+	//@Mapping( source = "sequenceName", target = "sequenceName" )
 	com.example.model.SysSequence toSysSequence(SysSequenceDTO source);
 
-	//@Mapping( source = "sequencName", target = "sequencName" )
+	//@Mapping( source = "sequenceName", target = "sequenceName" )
 	SysSequenceDTO toSysSequenceDTO(com.example.model.SysSequence source);
 }

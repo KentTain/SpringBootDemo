@@ -29,8 +29,8 @@ public class SysSequence extends EntityBase implements java.io.Serializable {
 	 */
 	@Id
 	//@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "SequencName", unique = true, nullable = false)
-	private String sequencName;
+	@Column(name = "SequenceName", unique = true, nullable = false)
+	private String sequenceName;
 	/**
 	 * 当前值
 	 */
@@ -83,7 +83,7 @@ public class SysSequence extends EntityBase implements java.io.Serializable {
 
 		SysSequence node = (SysSequence) o;
 
-		if (sequencName != null ? !sequencName.equals(node.sequencName) : node.sequencName != null)
+		if (sequenceName != null ? !sequenceName.equals(node.sequenceName) : node.sequenceName != null)
 			return false;
 		if (preFixString != null ? !preFixString.equals(node.preFixString) : node.preFixString != null)
 			return false;
@@ -99,7 +99,7 @@ public class SysSequence extends EntityBase implements java.io.Serializable {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + currentValue;
-		result = 31 * result + (sequencName != null ? sequencName.hashCode() : 0 );
+		result = 31 * result + (sequenceName != null ? sequenceName.hashCode() : 0 );
 		result = 31 * result + (preFixString != null ? preFixString.hashCode() : 0 );
 		result = 31 * result + (postFixString != null ? postFixString.hashCode() : 0 );
 		return result;

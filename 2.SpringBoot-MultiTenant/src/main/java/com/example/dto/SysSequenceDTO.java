@@ -17,7 +17,7 @@ public class SysSequenceDTO extends EntityBaseDTO implements java.io.Serializabl
 	/**
 	 * 序列名称
 	 */
-	private String sequencName;
+	private String sequenceName;
 	/**
 	 * 当前值
 	 */
@@ -62,7 +62,7 @@ public class SysSequenceDTO extends EntityBaseDTO implements java.io.Serializabl
 
 		SysSequenceDTO node = (SysSequenceDTO) o;
 
-		if (sequencName != null ? !sequencName.equals(node.sequencName) : node.sequencName != null)
+		if (sequenceName != null ? !sequenceName.equals(node.sequenceName) : node.sequenceName != null)
 			return false;
 		if (preFixString != null ? !preFixString.equals(node.preFixString) : node.preFixString != null)
 			return false;
@@ -78,7 +78,7 @@ public class SysSequenceDTO extends EntityBaseDTO implements java.io.Serializabl
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 31 * result + currentValue;
-		result = 31 * result + (sequencName != null ? sequencName.hashCode() : 0);
+		result = 31 * result + (sequenceName != null ? sequenceName.hashCode() : 0);
 		result = 31 * result + (preFixString != null ? preFixString.hashCode() : 0);
 		result = 31 * result + (postFixString != null ? postFixString.hashCode() : 0);
 		return result;

@@ -24,7 +24,7 @@ public class Tenant {
 	private String password;
 
 	// @Column(name = "domain")
-	private String domain;
+	private String[] domain;
 	
 	private String clientId;
 	private String clientISecret;
@@ -71,10 +71,10 @@ public class Tenant {
 		this.password = password;
 	}
 
-	public String getDomain() {
+	public String[] getDomain() {
 		return domain;
 	}
-	public void setDomain(String domain) {
+	public void setDomain(String[] domain) {
 		this.domain = domain;
 	}
 	
