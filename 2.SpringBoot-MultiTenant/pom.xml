@@ -73,14 +73,14 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.webs.bower</groupId>
+			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
-			<version>2.0.3</version>
+			<version>3.3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webs.bower</groupId>
+			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>3.0.3</version>
+			<version>3.3.7</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.jodd/jodd-core -->
@@ -148,12 +148,16 @@
 					<source>1.8</source> <!-- depending on your project -->
 					<target>1.8</target> <!-- depending on your project -->
 					<!-- See https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
-					<!-- Classpath elements to supply as annotation processor path. If specified, the compiler -->
-					<!-- will detect annotation processors only in those classpath elements. If omitted, the -->
-					<!-- default classpath is used to detect annotation processors. The detection itself depends -->
+					<!-- Classpath elements to supply as annotation processor path. If specified, 
+						the compiler -->
+					<!-- will detect annotation processors only in those classpath elements. 
+						If omitted, the -->
+					<!-- default classpath is used to detect annotation processors. The 
+						detection itself depends -->
 					<!-- on the configuration of annotationProcessors. -->
 					<!-- -->
-					<!-- According to this documentation, the provided dependency processor is not considered! -->
+					<!-- According to this documentation, the provided dependency processor 
+						is not considered! -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
