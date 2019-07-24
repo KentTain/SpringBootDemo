@@ -31,8 +31,7 @@
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${org.projectlombok.version}</version>
+			<artifactId>lombok</artifactId><!--$NO-MVN-MAN-VER$-->
 			<scope>provided</scope>
 		</dependency>
 
