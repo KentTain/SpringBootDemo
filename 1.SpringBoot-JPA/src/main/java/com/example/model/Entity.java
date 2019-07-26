@@ -5,14 +5,18 @@ import java.util.Date;
 import javax.persistence.MappedSuperclass;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class Entity extends EntityBase {
+
+	private static final long serialVersionUID = -2841097052881018105L;
 
 	private boolean IsDeleted;
 

@@ -16,14 +16,22 @@ import javax.persistence.OneToMany;
 //import org.springframework.lang.Nullable;
 //import org.springframework.data.annotation.Id;
 
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 /**
  * @author tianc 树结构基类
  */
-@Data
+
+
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class TreeNode<T> extends Entity {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3083555787307388024L;
 
 	/**
 	 * 子节点Id

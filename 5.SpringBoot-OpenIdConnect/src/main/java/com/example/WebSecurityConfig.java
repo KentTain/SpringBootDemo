@@ -35,7 +35,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 
-import com.example.util.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.util.IdSrvAccessDecisionManager;
 import com.example.util.IdSrvAccessDecisionVoter;
 import com.example.util.IdSrvAuthenticationFailureHandler;
@@ -184,12 +183,6 @@ public class WebSecurityConfig {
 			};
 		}
 
-		// 将认证信息保存到cookie
-		private AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
-			// return new HttpSessionOAuth2AuthorizationRequestRepository();
-			final int shortLivedMillis = 15 * 60 * 1000; // 15 minutes
-			return new HttpCookieOAuth2AuthorizationRequestRepository(shortLivedMillis);
-		}
 	}
 
 	@Bean
