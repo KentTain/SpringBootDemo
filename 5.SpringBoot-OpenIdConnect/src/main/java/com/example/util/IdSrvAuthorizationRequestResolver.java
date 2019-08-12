@@ -13,7 +13,6 @@ import org.springframework.security.crypto.keygen.Base64StringKeyGenerator;
 import org.springframework.security.crypto.keygen.StringKeyGenerator;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
@@ -26,7 +25,7 @@ import com.example.Tenant;
 import com.example.Interceptor.TenantContext;
 
 public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
-	private Logger logger = LoggerFactory.getLogger(IdSrvAuthorizationRequestResolver.class);
+	private static Logger logger = LoggerFactory.getLogger(IdSrvAuthorizationRequestResolver.class);
 	
 	private static final String REGISTRATION_ID_URI_VARIABLE_NAME = "registrationId";
 	private static final String DEFAULT_AUTHORIZATION_REQUEST_BASE_URI = "/oauth2/authorization";
@@ -94,8 +93,8 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		Map<String, Object> additionalParameters = new HashMap<>();
 		additionalParameters.put(OAuth2ParameterNames.REGISTRATION_ID, clientRegistration.getRegistrationId());
 		if (registrationId.equalsIgnoreCase(OpenIdConnectConstants.ClientAuthScheme)) {
-        	additionalParameters.put("acr_values", "idp%3A" + registrationId);
-        	additionalParameters.put("acr_values", "tenant%3A" + tenantName);
+        	//additionalParameters.put("acr_values", "idp:" + registrationId);
+        	additionalParameters.put("acr_values", "tenant:" + tenantName);
         	additionalParameters.put(OpenIdConnectConstants.ClaimTypes_TenantName, tenantName);
         }
         
@@ -157,7 +156,7 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 			
 			return uri.getHost();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+			logger.error("Method getUrlHostWithoutPort throw exception: " + e.getMessage());
 			return null;
 		}
 	}
@@ -172,7 +171,7 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 			
 			return uri.getHost() + ":" + port;
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+			logger.error("Method getUrlHostWithPort throw exception: " + e.getMessage());
 			return null;
 		}
 	}
@@ -184,7 +183,7 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 			
 			return uri.toString();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+			logger.error("Method replaceHostInUrl throw exception: " + e.getMessage());
 			return null;
 		}
 	}
