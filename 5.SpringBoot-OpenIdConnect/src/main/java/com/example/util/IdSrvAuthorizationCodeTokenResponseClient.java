@@ -155,6 +155,8 @@ public class IdSrvAuthorizationCodeTokenResponseClient  implements OAuth2AccessT
 		if (ClientAuthenticationMethod.BASIC.equals(clientRegistration.getClientAuthenticationMethod())) {
 			headers.setBasicAuth(tenant.getClientId(), tenant.getClientSecret());
 		}
+		
+		System.out.println(String.format("-----IdSrvAuthorizationCodeTokenResponseClient set tenant: ¡¾%s¡¿ headers: ¡¾%s¡¿",  tenant.getTenantName(), headers.toString()));
 		return headers;
 	}
 	private HttpHeaders getDefaultTokenRequestHeaders() {

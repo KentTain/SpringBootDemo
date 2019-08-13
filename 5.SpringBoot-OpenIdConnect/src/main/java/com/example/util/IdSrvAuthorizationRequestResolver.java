@@ -85,9 +85,9 @@ public class IdSrvAuthorizationRequestResolver implements OAuth2AuthorizationReq
 		String tenantName = tenant.getTenantName();
 		String redirectUriStr = this.expandRedirectUri(request, clientRegistration, redirectUriAction);
 		String authUriStr = replaceHostInUrl(clientRegistration.getProviderDetails().getAuthorizationUri(), tenantName);
-		System.out.println("----IdSvrAuthorizationRequestResolver resolve tenant: " + tenantName
-				+ ", redirectUriStr=" + redirectUriStr
-				+ ", authUriStr=" + authUriStr);
+		System.out.println("----IdSvrAuthorizationRequestResolver resolve tenant: 【" + tenantName
+				+ "】, redirectUriStr=【" + redirectUriStr
+				+ "】, authUriStr=【" + authUriStr + "】");
         
 		//将自定义参数添加到现有OAuth2AuthorizationRequest.additionalParameters
 		Map<String, Object> additionalParameters = new HashMap<>();
