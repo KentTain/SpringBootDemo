@@ -43,6 +43,7 @@ import com.example.util.IdSrvAuthenticationSuccessHandler;
 import com.example.util.IdSrvAuthorizationCodeTokenResponseClient;
 import com.example.util.IdSrvAuthorizationRequestResolver;
 import com.example.util.IdSrvGrantedAuthority;
+import com.example.util.IdSrvHttpCookieAuthorizationRequestRepository;
 import com.example.util.IdSrvOidcUser;
 import com.example.util.IdSrvOidcUserService;
 import com.example.util.IdSrvSecurityInterceptor;
@@ -64,18 +65,18 @@ public class WebSecurityConfig {
 		private IdSrvAuthenticationFailureHandler failureHandler;
 		@Autowired
 		private IdSrvSecurityInterceptor securityFilter;
-		//@Autowired
-		//private IdSrvMethodSecurityInterceptor securityMethodFilter;
+		// @Autowired
+		// private IdSrvMethodSecurityInterceptor securityMethodFilter;
 		@Autowired
 		private IdSrvAuthorizationCodeTokenResponseClient idTokenResponseClient;
 
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http
-				.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
-				//.addFilterBefore(securityMethodFilter, FilterSecurityInterceptor.class)
-				.authenticationProvider(new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService()))
-				.authorizeRequests().anyRequest().authenticated()
+			http.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+					// .addFilterBefore(securityMethodFilter, FilterSecurityInterceptor.class)
+					.authenticationProvider(
+							new IdSrvAuthenticationProvider(this.idTokenResponseClient, oidcUserService()))
+					.authorizeRequests().anyRequest().authenticated()
 					// 修改授权相关逻辑
 					.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
 						public <O extends FilterSecurityInterceptor> O postProcess(O fsi) {
@@ -84,35 +85,44 @@ public class WebSecurityConfig {
 							// fsi.setSecurityMetadataSource(fsi.getSecurityMetadataSource());
 
 							// 覆盖AccessDecisionManager
-							//fsi.setAccessDecisionManager(new IdSvrAccessDecisionManager());
+							// fsi.setAccessDecisionManager(new IdSvrAccessDecisionManager());
 
 							// 增加投票项
-							//AccessDecisionManager accessDecisionManager = fsi.getAccessDecisionManager();
-							//if (accessDecisionManager instanceof AbstractAccessDecisionManager) {
-							//	((AbstractAccessDecisionManager) accessDecisionManager).getDecisionVoters()
-							//			.add(new IdSvrAccessDecisionVoter());
-							//}
+							// AccessDecisionManager accessDecisionManager = fsi.getAccessDecisionManager();
+							// if (accessDecisionManager instanceof AbstractAccessDecisionManager) {
+							// ((AbstractAccessDecisionManager) accessDecisionManager).getDecisionVoters()
+							// .add(new IdSvrAccessDecisionVoter());
+							// }
 
 							return fsi;
 						}
-					}).and()
+					})
+					.and()
 					.oauth2Login()
-					//.successHandler(successHandler)
-					//.failureHandler(failureHandler)
+					.successHandler(successHandler)
+					// .failureHandler(failureHandler)
 					.authorizationEndpoint()
 						//.authorizationRequestRepository(this.cookieAuthorizationRequestRepository())
 						// 1. 配置自定义OAuth2AuthorizationRequestResolver
-						.authorizationRequestResolver(new IdSrvAuthorizationRequestResolver(this.clientRegistrationRepository))
-						.and()
+						.authorizationRequestResolver(
+								new IdSrvAuthorizationRequestResolver(this.clientRegistrationRepository))
+					.and()
 					.tokenEndpoint()
-						.accessTokenResponseClient(this.idTokenResponseClient)
-						.and()
-					.userInfoEndpoint()
+						.accessTokenResponseClient(this.idTokenResponseClient).and()
+						.userInfoEndpoint()
 						.customUserType(IdSrvOidcUser.class, OpenIdConnectConstants.ClientAuthScheme)
 						.userAuthoritiesMapper(this.userAuthoritiesMapper())
 						.oidcUserService(this.oidcUserService())
 
 			;
+		}
+
+		//Default: HttpSessionOAuth2AuthorizationRequestRepository
+		// 将认证信息保存到cookie
+		private AuthorizationRequestRepository<OAuth2AuthorizationRequest> cookieAuthorizationRequestRepository() {
+			// return new HttpSessionOAuth2AuthorizationRequestRepository();
+			final int shortLivedMillis = 15 * 60 * 1000; // 15 minutes
+			return new IdSrvHttpCookieAuthorizationRequestRepository(shortLivedMillis);
 		}
 
 		private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
@@ -172,13 +182,12 @@ public class WebSecurityConfig {
 						}
 					}
 				});
-				
+
 				StringBuilder sb = new StringBuilder();
-	            for(GrantedAuthority authority : mappedAuthorities)
-	            {
-	            	sb.append(authority.getAuthority() + ", ");
-	            }
-	            System.out.println("----userAuthoritiesMapper mappedAuthorities: " + sb.toString());
+				for (GrantedAuthority authority : mappedAuthorities) {
+					sb.append(authority.getAuthority() + ", ");
+				}
+				System.out.println("----userAuthoritiesMapper mappedAuthorities: " + sb.toString());
 				return mappedAuthorities;
 			};
 		}
@@ -191,11 +200,10 @@ public class WebSecurityConfig {
 	}
 
 	private ClientRegistration idsvrClientRegistration() {
-		logger.debug("----WebSecurityConfig idsvrClientRegistration: "
-				+ OpenIdConnectConstants.ClientAuthScheme);
+		logger.debug("----WebSecurityConfig idsvrClientRegistration: " + OpenIdConnectConstants.ClientAuthScheme);
 
-		return ClientRegistration.withRegistrationId(OpenIdConnectConstants.ClientAuthScheme)
-				.clientId("Y0RiYQ==").clientName("cDba").clientSecret("MmJmNWIyM2Q5ZjY4OWU5YzFmYWVkZTUwNzY2ZWJkNTg=")
+		return ClientRegistration.withRegistrationId(OpenIdConnectConstants.ClientAuthScheme).clientId("Y0RiYQ==")
+				.clientName("cDba").clientSecret("MmJmNWIyM2Q5ZjY4OWU5YzFmYWVkZTUwNzY2ZWJkNTg=")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.scope(OidcScopes.OPENID, OidcScopes.PROFILE, "adminapi")
