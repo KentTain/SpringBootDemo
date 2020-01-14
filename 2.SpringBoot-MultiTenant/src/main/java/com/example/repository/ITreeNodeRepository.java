@@ -29,7 +29,7 @@ public interface ITreeNodeRepository<T extends TreeNode<T>, ID extends Serializa
      *		--node			<br/>
      *			--node		<br/>
 	 */
-	@EntityGraph(value = "TreeNode.Graph", type = EntityGraph.EntityGraphType.FETCH)
+	//@EntityGraph(value = "TreeNode.Graph", type = EntityGraph.EntityGraphType.FETCH)
 	T getTreeNodeWithNestChildById(Class<T> clazz, int id);
 
 	/**
