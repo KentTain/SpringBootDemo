@@ -45,7 +45,7 @@
         <dep.ver.shiro>1.2.3</dep.ver.shiro>
         <dep.ver.freemarker>2.3.22</dep.ver.freemarker>
         <dep.ver.commons-beanutils>1.9.2</dep.ver.commons-beanutils>
-        <dep.ver.junit>4.11</dep.ver.junit>
+        <dep.ver.junit>4.13.1</dep.ver.junit>
         <dep.ver.mockito>1.10.19</dep.ver.mockito>
         <dep.ver.joda-time>2.9.3</dep.ver.joda-time>
         <dep.ver.commons-collections4>4.1</dep.ver.commons-collections4>
