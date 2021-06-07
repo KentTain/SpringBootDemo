@@ -33,7 +33,7 @@
         <dep.ver.gson>2.2.4</dep.ver.gson>
         <dep.ver.guava>15.0</dep.ver.guava>
         <dep.ver.slf4j>1.7.21</dep.ver.slf4j>
-        <dep.ver.logback>1.1.7</dep.ver.logback>
+        <dep.ver.logback>1.2.0</dep.ver.logback>
         <dep.ver.log4j>1.2.12</dep.ver.log4j>
         <dep.ver.slf4j-log4j12>1.7.5</dep.ver.slf4j-log4j12>
         <dep.ver.logback-ext-spring>0.1.2</dep.ver.logback-ext-spring>
