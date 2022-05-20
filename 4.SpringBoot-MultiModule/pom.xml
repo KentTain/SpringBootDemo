@@ -30,7 +30,7 @@
         <dep.ver.javassist>3.20.0-GA</dep.ver.javassist>
         <dep.ver.paranamer>2.7</dep.ver.paranamer>
         <dep.ver.concurrentlinkedhashmap-lru>1.4.2</dep.ver.concurrentlinkedhashmap-lru>
-        <dep.ver.gson>2.2.4</dep.ver.gson>
+        <dep.ver.gson>2.8.9</dep.ver.gson>
         <dep.ver.guava>15.0</dep.ver.guava>
         <dep.ver.slf4j>1.7.21</dep.ver.slf4j>
         <dep.ver.logback>1.1.7</dep.ver.logback>
