@@ -19,7 +19,7 @@
     	<dep.ver.lombok>1.16.10</dep.ver.lombok>
         <dep.ver.druid>1.0.1</dep.ver.druid>
         <dep.ver.mysql>5.1.21</dep.ver.mysql>
-        <dep.ver.springframework>4.2.5.RELEASE</dep.ver.springframework>
+        <dep.ver.springframework>5.2.22.RELEASE</dep.ver.springframework>
         <dep.ver.mybatis>3.3.0</dep.ver.mybatis>
         <dep.ver.mybatis-spring>1.3.0</dep.ver.mybatis-spring>
         <dep.ver.pagehelper>4.1.6</dep.ver.pagehelper>
