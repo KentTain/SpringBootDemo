@@ -37,7 +37,7 @@
         <dep.ver.log4j>1.2.12</dep.ver.log4j>
         <dep.ver.slf4j-log4j12>1.7.5</dep.ver.slf4j-log4j12>
         <dep.ver.logback-ext-spring>0.1.2</dep.ver.logback-ext-spring>
-        <dep.ver.dubbo>2.5.3</dep.ver.dubbo>
+        <dep.ver.dubbo>2.6.12</dep.ver.dubbo>
         <dep.ver.zookeeper>3.4.8</dep.ver.zookeeper>
         <dep.ver.zkclient>0.8</dep.ver.zkclient>
         <dep.ver.commons-lang3>3.1</dep.ver.commons-lang3>
